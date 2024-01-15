@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<Version>0.9.5</Version>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<IncludedModProjectPaths>i18n;assets</IncludedModProjectPaths>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="EnumByNameSourceGenerator" Version="1.1.1" PrivateAssets="All" ExcludeAssets="runtime" />
+    <PackageReference Include="Nickel.ModBuildConfig" Version="0.4.0" />
+	<PackageReference Include="MakeTypesPublic" Version="1.0.3" PrivateAssets="All" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,151 @@
+{
+    "character": {
+        "name": "Randall",
+        "description": [
+            "<c=3e8ad5>RANDALL</c>",
+            "A playtester, his cards dabble in all basic aspects of the game."
+        ]
+    },
+    "ship": {
+        "name": "Rigel",
+        "description": "A large laboratory ship. It has the means to remove its own unnecessary components."
+    },
+    "card": {
+        "SynergyEvade": { "name": "Synergy Evade" },
+        "SynergyShield": { "name": "Synergy Shield" },
+
+        "AttackAndAHalf": { "name": "Fragmented Attack" },
+        "Teamwork": { "name": "Teamwork" },
+        "MasterOfNone": { "name": "Master Of None" },
+        "Rondell": { "name": "Rondell" },
+        "ShieldV1_5": { "name": "Shield v1.5" },
+        "InParts": { "name": "Assembly Required" },
+        "Magnify": { "name": "Magnify" },
+
+        "EvadeV1_5": { "name": "Evade v1.5" },
+        "ParticleBeam": { "name": "Particle Beam" },
+        "Overcharge": { "name": "Overcharge" },
+        "SlowBarrage": { "name": "Slow Barrage" },
+        "SynergyStrike": { "name": "Synergy Strike" },
+        "Cooperate": {
+            "name": "Cooperate",
+            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synzergized</c> cards in hand."
+        },
+        "CompleteSet": {
+            "name": "Complete Set",
+            "description": "Completes all partial statuses."
+        },
+
+        "EmergencyProtocol": { "name": "Emergency Protocol" },
+        "EnhancedMagnify": { "name": "Enhanced Magnify" },
+        "CoPilot": { "name": "Co-Pilot" },
+        "AuxiliaryShields": { "name": "Auxiliary Shields" },
+        "Archive": { "name": "Synergy Amplifier" },
+
+        "DisposableShield": { "name": "Disposable Shield" },
+        "DisposableWinglets": { "name": "Disposable Winglets" },
+        "DisposableCannon": { "name": "Disposable Cannon" },
+        "DisposableShredder": {
+            "name": "Disposable Shredder",
+            "description": "Select a card in hand, shred it."
+        }
+    },
+    "status": {
+        "ChargeUp": {
+            "name": "Synergy Charge",
+            "description": "When you accumulate {0} <c=status>SYNERGY CHARGES</c>, lose them and shoot for {1} damage."
+        },
+        "HalfEvade": {
+            "name": "Half Evade",
+            "description": "Combine 2 to gain 1 <c=status>EVADE</c>!"
+        },
+        "HalfShield": {
+            "name": "Half Shield",
+            "description": "Combine 2 to gain 1 <c=status>SHIELD</c>!"
+        },
+        "HalfTempShield": {
+            "name": "Half Temp Shield",
+            "description": "Combine 2 to gain 1 <c=status>TEMP SHIELD</c>!"
+        },
+        "HalfDamage": {
+            "name": "Half Damage",
+            "description": "Combine 2 to take 1 damage."
+        },
+        "HalfCard": {
+            "name": "Half Card",
+            "description": "Combine 2 to draw 1 card."
+        },
+        "CoPilotStatus": {
+            "name": "Co-Pilot",
+            "description": "On turn start, gain {0} <c=status>HALF EVADE</c>, also gain an <c=status>ENERGY FRAGMENT</c>."
+        },
+        "AuxiliaryShieldsStatus": {
+            "name": "Auxiliary Shields",
+            "description": "On turn start, gain {0} <c=status>HALF SHIELD</c>, also gain an <c=status>ENERGY FRAGMENT</c>."
+        },
+        "OverchargeStatus": {
+            "name": "Overcharge",
+            "description": "You need <c=status>{0}</c> extra <c=status>SYNERGY CHARGE</c> to fire, but you deal {0} extra damage when you do."
+        },
+        "ArchiveStatus": {
+            "name": "Synergy Accelerator",
+            "description": "On turn start, gain {0} <c=status>HALF CARD</c> and {0} cards become <c=status>SYNERGIZED</c>."
+        },
+        "DummyHalvesStatus": {
+            "name": "Partial Statuses",
+            "description": [
+                "Includes:",
+                "<c=status>Half Evade</c>, <c=status>Half Shield</c>, <c=status> Half Temp Shield</c>, <c=status> Half Card</c>, <c=status> Half Damage</c>, <c=status> Energy Fragment</c>, <c=status> Synergy Charge</c>."
+            ]
+        }
+    },
+    "artifact": {
+        "SparePiecesArtifact": {
+            "name": "SPARE PIECES",
+            "description": "On turn start: gain 1 random <c=status>HALF EVADE</c>, <c=status>HALF SHIELD</c> or <c=status>HALF CARD</c>."
+        },
+        "EnhancedMaterialsArtifact": {
+            "name": "ENHANCED MATERIALS",
+            "description": "On pickup: gain 1 <c=status>MAX HULL</c> and 1 <c=status>MAX SHIELD</c>, heal 2 hull."
+        },
+        "PatchingProgramArtifact": {
+            "name": "PATCHING PROGRAM",
+            "description": "On pickup: select a card to upgrade."
+        },
+        "TeapotArtifact": {
+            "name": "TEAPOT",
+            "description": "On turn start: A card in draw pile, discard or hand becomes Synergized."
+        },
+        "DivertedChargeArtifact": {
+            "name": "DIVERTED CHARGE",
+            "description": "On turn start: Spend 2 <c=status>SYNERGY CHARGE</c> to gain 1 energy."
+        },
+        "RepurposedPartsArtifact": {
+            "name": "HALF OF A COOKIE",
+            "description": "On turn start: Spend 1 random <c=status>Half Evade</c> or <c=status>Half Shield</c> or <c=status>Half Temp Shield</c> or <c=status>Half Card</c> or <c=status>Half Damage</c> to draw a card."
+        },
+        "BonusSynergyArtifact": {
+            "name": "SYNERGY BOOSTER",
+            "description": "Synergize actions affect <c=boldPink>1</c> more card."
+        },
+        "SynergyPowerArtifact": {
+            "name": "RESIDUAL POWER",
+            "description": "Playing <c=cardtrait>Synergized</c> cards also grants <c=boldPink>1</c> <c=status>Energy Fragment</c>."
+        }
+    },
+    "action": {
+        "ASynergize": {
+            "name": "Synergize",
+            "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in draw pile, then discard, then hand."
+        },
+        "AVariableHintFake": {
+            "description": "Your Partial Statuses ({{Amount}})"
+        }
+    },
+    "trait": {
+        "Synergized": {
+            "name": "Synergized",
+            "description":  "On play: gain 1 <c=status>SYNERGY CHARGE</c>, lose this trait."
+        }
+    }
+}
