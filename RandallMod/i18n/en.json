@@ -1,0 +1,66 @@
+{
+    "character": {
+        "name": "Randall",
+        "description": [
+            "<c=3e8ad5>RANDALL</c>",
+            "A playtester, his cards dabble in all basic aspects of the game."
+        ]
+    },
+    "card": {
+        "SynergyEvade": { "name": "Synergy Evade" },
+        "SynergyShield": { "name": "Synergy Shield" },
+
+        "AttackAndAHalf": { "name": "Fragmented Attack" },
+        "MasterOfNone": { "name": "Master Of None" },
+
+        "EmergencyProtocol": { "name": "Emergency Protocol" },
+
+        "EnhancedMagnify": { "name": "Enhanced Magnify" },
+        "CoPilot": { "name": "Co-Pilot" },
+        "AuxiliaryShields": { "name": "Auxiliary Shields" }
+    },
+    "status": {
+        "ChargeUp": {
+            "name": "Synergy Charge",
+            "description": "When you accumulate 3 <c=3e8ad5>Synergy Charges</c>, lose them and shoot for 1 damage."
+        },
+        "HalfEvade": {
+            "name": "Half Evade",
+            "description": "Combine 2 to gain 1 Evade!"
+        },
+        "HalfShield": {
+            "name": "Half Shield",
+            "description": "Combine 2 to gain 1 Shield!"
+        },
+        "HalfTempShield": {
+            "name": "Half Temp Shield",
+            "description": "Combine 2 to gain 1 Temp Shield!"
+        },
+        "HalfDamage": {
+            "name": "Half Damage",
+            "description": "Combine 2 to take 1 damage."
+        },
+        "CoPilotStatus": {
+            "name": "Co-Pilot",
+            "description": "On turn start, gain 1 Half Evade."
+        },
+        "AuxiliaryShieldsStatus": {
+            "name": "Auxiliary Shields",
+            "description": "On turn start, gain 1 Half Shield."
+        }
+    },
+    "artifact": {
+        "SparePiecesArtifact": {
+            "name": "SPARE PIECES",
+            "description": "On turn start: gain 1 random Half Evade, Half Shield or Half Temp Shield."
+        },
+        "EnhancedMaterialsArtifact": {
+            "name": "ENHANCED MATERIALS",
+            "description": "On pickup: gain 1 max hull and 1 max shield, heal 2 hull."
+        },
+        "PatchingProgramArtifact": {
+            "name": "PATCHING PROGRAM",
+            "description": "On pickup: select a card to upgrade."
+        }
+    }
+}

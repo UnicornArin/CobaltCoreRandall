@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<IncludedModProjectPaths>i18n;assets</IncludedModProjectPaths>
+	<GameExePath>R:\Games\Steam\steamapps\common\Cobalt Core\CobaltCore.exe</GameExePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="EnumByNameSourceGenerator" Version="1.1.1" PrivateAssets="All" ExcludeAssets="runtime" />
+    <PackageReference Include="Nickel.ModBuildConfig" Version="0.2.0" />
+  </ItemGroup>
+
+</Project>
