@@ -25,3 +25,4 @@ R:\ModProjects\RandallMod\RandallMod\RandallMod\obj\Debug\net8.0\RandallMod.Asse
 R:\ModProjects\RandallMod\RandallMod\RandallMod\obj\Debug\net8.0\RandallMod.csproj.CoreCompileInputs.cache
 R:\ModProjects\RandallMod\RandallMod\RandallMod\obj\Debug\net8.0\RandallMod.csproj.CopyComplete
 R:\ModProjects\RandallMod\RandallMod\RandallMod\obj\Debug\net8.0\RandallMod.dll
+R:\ModProjects\RandallMod\RandallMod\RandallMod\obj\Debug\net8.0\RandallMod.sourcelink.json
