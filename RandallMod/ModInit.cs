@@ -1,6 +1,7 @@
 ﻿using FMOD;
 using HarmonyLib;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using Nanoray.PluginManager;
 using Nickel;
 using RandallMod.Artifacts;
@@ -29,6 +30,11 @@ namespace RandallMod
         internal IStatusEntry HalfDamageStatus { get; }
         internal IStatusEntry CoPilotStatus { get; }
         internal IStatusEntry AuxiliaryShieldsStatus { get; }
+        internal IStatusEntry OverchargeStatus { get; }
+
+        //Initialize TraitSprites
+        internal ISpriteEntry SynergyChargeSprite { get; private set; } = null!;
+        internal ISpriteEntry IconSynzergize { get; private set; } = null!;
 
         //Initialize Deck
         internal IDeckEntry RandallDeck { get; }
@@ -215,11 +221,26 @@ namespace RandallMod
                 Name = this.AnyLocalizations.Bind(["status", "AuxiliaryShieldsStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "AuxiliaryShieldsStatus", "description"]).Localize
             });
+            OverchargeStatus = helper.Content.Statuses.RegisterStatus("OverchargeStatus", new()
+            {
+                Definition = new()
+                {
+                    icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconOvercharge.png")).Sprite,
+                    color = new("3e8ad5"),
+                    isGood = false
+                },
+                Name = this.AnyLocalizations.Bind(["status", "OverchargeStatus", "name"]).Localize,
+                Description = this.AnyLocalizations.Bind(["status", "OverchargeStatus", "description"]).Localize
+            });
 
             //Register Artifacts
             SparePieces.Register(helper);
             EnhancedMaterials.Register(helper);
             PatchingProgram.Register(helper);
+
+            //Register additional sprites
+            SynergyChargeSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconChargeUp2.png"));
+            IconSynzergize = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconSynergize.png"));
 
             //This has to be at the end, this applies all Harmony patches
             //This is an instance method, THIS instance is calling it, this. can be removed
@@ -242,10 +263,15 @@ namespace RandallMod
             );
 
             harmony.Patch(
-                //This refers to the code that is about to be intruded into.
-                //This is how Harmony wants MethodInfo through AccessTools
+                //Artifact Patch for Artifact
                 original: AccessTools.DeclaredMethod(typeof(Ship), nameof(Ship.OnBeginTurn)),
                 postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(OnTurnBeingHandler), nameof(OnTurnBeingHandler.HarmonyPostfix_Ship_OnBeginTurn)))
+            );
+
+            harmony.Patch(
+                //Card Render Transpiler for Traits
+                original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.Render)),
+                transpiler: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.Card_Render_Transpiler)))
             );
         }
 

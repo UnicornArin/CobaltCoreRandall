@@ -47,31 +47,14 @@
               "version": "[1.1.1, )"
             },
             "MakeTypesPublic": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers",
+              "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
               "version": "[1.0.3, )"
             },
-            "MonoGame.Framework.DesktopGL": {
-              "include": "Compile",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[3.8.1.303, )"
-            },
-            "Nanoray.ExtractSingleFileApplicationResourceTask": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[1.0.0, )"
-            },
-            "Newtonsoft.Json": {
-              "include": "Compile",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[13.0.3, )"
-            },
             "Nickel.ModBuildConfig": {
               "target": "Package",
-              "version": "[0.2.0, )"
+              "version": "[0.4.0, )"
             }
           },
           "imports": [

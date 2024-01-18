@@ -10,10 +10,7 @@
         "dependencies": {
           "EnumByNameSourceGenerator": "1.1.1",
           "MakeTypesPublic": "1.0.3",
-          "MonoGame.Framework.DesktopGL": "3.8.1.303",
-          "Nanoray.ExtractSingleFileApplicationResourceTask": "1.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "Nickel.ModBuildConfig": "0.2.0"
+          "Nickel.ModBuildConfig": "0.4.0"
         },
         "runtime": {
           "RandallMod.dll": {}
@@ -29,12 +26,6 @@
       "Microsoft.Build.Framework/16.11.0": {
         "dependencies": {
           "System.Security.Permissions": "4.7.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Build.Framework.dll": {
-            "assemblyVersion": "15.1.0.0",
-            "fileVersion": "16.11.0.36601"
-          }
         }
       },
       "Microsoft.Build.Utilities.Core/16.11.0": {
@@ -46,24 +37,12 @@
           "System.Configuration.ConfigurationManager": "4.7.0",
           "System.Security.Permissions": "4.7.0",
           "System.Text.Encoding.CodePages": "4.0.1"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Build.Utilities.Core.dll": {
-            "assemblyVersion": "15.1.0.0",
-            "fileVersion": "16.11.0.36601"
-          }
         }
       },
       "Microsoft.NET.StringTools/1.0.0": {
         "dependencies": {
           "System.Memory": "4.5.4",
           "System.Runtime.CompilerServices.Unsafe": "5.0.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.NET.StringTools.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.26302"
-          }
         }
       },
       "Microsoft.NETCore.Platforms/3.1.0": {},
@@ -83,46 +62,10 @@
       "Microsoft.Win32.SystemEvents/4.7.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll": {
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.700.19.56404"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.700.19.56404"
-          }
         }
       },
-      "Mono.Cecil/0.11.4": {
-        "runtime": {
-          "lib/netstandard2.0/Mono.Cecil.Mdb.dll": {
-            "assemblyVersion": "0.11.4.0",
-            "fileVersion": "0.11.4.0"
-          },
-          "lib/netstandard2.0/Mono.Cecil.Pdb.dll": {
-            "assemblyVersion": "0.11.4.0",
-            "fileVersion": "0.11.4.0"
-          },
-          "lib/netstandard2.0/Mono.Cecil.Rocks.dll": {
-            "assemblyVersion": "0.11.4.0",
-            "fileVersion": "0.11.4.0"
-          },
-          "lib/netstandard2.0/Mono.Cecil.dll": {
-            "assemblyVersion": "0.11.4.0",
-            "fileVersion": "0.11.4.0"
-          }
-        }
-      },
-      "MonoGame.Framework.DesktopGL/3.8.1.303": {},
-      "Nanoray.ExtractSingleFileApplicationResourceTask/1.0.0": {},
-      "Newtonsoft.Json/13.0.3": {},
-      "Nickel.ModBuildConfig/0.2.0": {},
+      "Mono.Cecil/0.11.4": {},
+      "Nickel.ModBuildConfig/0.4.0": {},
       "System.Collections/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
@@ -135,38 +78,12 @@
         "dependencies": {
           "System.Security.Cryptography.ProtectedData": "4.7.0",
           "System.Security.Permissions": "4.7.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {
-            "assemblyVersion": "4.0.3.0",
-            "fileVersion": "4.700.19.56404"
-          }
         }
       },
       "System.Drawing.Common/4.7.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
           "Microsoft.Win32.SystemEvents": "4.7.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Drawing.Common.dll": {
-            "assemblyVersion": "4.0.0.1",
-            "fileVersion": "4.6.26919.2"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll": {
-            "rid": "unix",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.700.19.56404"
-          },
-          "runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.700.19.56404"
-          }
         }
       },
       "System.Globalization/4.3.0": {
@@ -248,32 +165,11 @@
           "System.Security.Principal.Windows": "4.7.0"
         }
       },
-      "System.Security.Cryptography.ProtectedData/4.7.0": {
-        "runtime": {
-          "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
-            "assemblyVersion": "4.0.5.0",
-            "fileVersion": "4.700.19.56404"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.5.0",
-            "fileVersion": "4.700.19.56404"
-          }
-        }
-      },
+      "System.Security.Cryptography.ProtectedData/4.7.0": {},
       "System.Security.Permissions/4.7.0": {
         "dependencies": {
           "System.Security.AccessControl": "4.7.0",
           "System.Windows.Extensions": "4.7.0"
-        },
-        "runtime": {
-          "lib/netcoreapp3.0/System.Security.Permissions.dll": {
-            "assemblyVersion": "4.0.3.0",
-            "fileVersion": "4.700.19.56404"
-          }
         }
       },
       "System.Security.Principal.Windows/4.7.0": {},
@@ -316,20 +212,6 @@
       "System.Windows.Extensions/4.7.0": {
         "dependencies": {
           "System.Drawing.Common": "4.7.0"
-        },
-        "runtime": {
-          "lib/netcoreapp3.0/System.Windows.Extensions.dll": {
-            "assemblyVersion": "4.0.1.0",
-            "fileVersion": "4.700.19.56404"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.1.0",
-            "fileVersion": "4.700.19.56404"
-          }
         }
       }
     }
@@ -410,33 +292,12 @@
       "path": "mono.cecil/0.11.4",
       "hashPath": "mono.cecil.0.11.4.nupkg.sha512"
     },
-    "MonoGame.Framework.DesktopGL/3.8.1.303": {
+    "Nickel.ModBuildConfig/0.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eGYhqn0n1olk8MNYeE9EuBmoNNECN1T18rPMaQpkzsEQ0H3nVyFPXC+uCo78v5pi5juQpJ3PSFnSkjzZJ1U58A==",
-      "path": "monogame.framework.desktopgl/3.8.1.303",
-      "hashPath": "monogame.framework.desktopgl.3.8.1.303.nupkg.sha512"
-    },
-    "Nanoray.ExtractSingleFileApplicationResourceTask/1.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-0U6jrrA25UVpCSz+nxjB4dISGulsWnlgzyff01+49azDh+glCA3Jp1r7cUgmlMob9HhcrCUBTvqg4/GU4KDE/A==",
-      "path": "nanoray.extractsinglefileapplicationresourcetask/1.0.0",
-      "hashPath": "nanoray.extractsinglefileapplicationresourcetask.1.0.0.nupkg.sha512"
-    },
-    "Newtonsoft.Json/13.0.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
-      "path": "newtonsoft.json/13.0.3",
-      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
-    },
-    "Nickel.ModBuildConfig/0.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Ebt/jX0VesPjJ0jzm5qx/OjcQF3JaGVz0QCnCUj1LjfgGdEZrR5qpKIMjOG1bBuvXgXnnziD0A/Msw8+J4HRyQ==",
-      "path": "nickel.modbuildconfig/0.2.0",
-      "hashPath": "nickel.modbuildconfig.0.2.0.nupkg.sha512"
+      "sha512": "sha512-C7UYj1DZRA/berjPdYQ/wjn4OMlMSnBNK2eDBG3j75/E8yqkUsD8vAf3jl5yS0NZPag/eoBQiYNZyYzl7RHRxg==",
+      "path": "nickel.modbuildconfig/0.4.0",
+      "hashPath": "nickel.modbuildconfig.0.4.0.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",

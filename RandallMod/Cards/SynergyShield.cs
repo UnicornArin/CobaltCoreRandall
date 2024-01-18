@@ -35,6 +35,11 @@ internal sealed class SynergyShield : Card
         List<CardAction> actions = [];
 
         actions.Add(
+        new ASynergize {
+            Count = 1
+        });
+
+        actions.Add(
         new AStatus
         {
             targetPlayer = true,

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "MlNyvuuo1IcBvyNaUx9PD6tTxyzHxXTvNycDHQDb2VUJk0HLjQH+JSfmGPMkllFMv9O0+urfnSFufByd3stg6g==",
+  "dgSpecHash": "7ifzXbNn3+7Hz+C09qZEeucF8+8wUCmmq5N3GH0NmYfcYdece8M0JRfx/mzv3mHS+8uF9P+ojIZY2R1LXoJrQQ==",
   "success": true,
   "projectFilePath": "R:\\ModProjects\\RandallMod\\RandallMod\\RandallMod\\RandallMod.csproj",
   "expectedPackageFiles": [
@@ -14,10 +14,7 @@
     "C:\\Users\\freez\\.nuget\\packages\\microsoft.win32.registry\\4.3.0\\microsoft.win32.registry.4.3.0.nupkg.sha512",
     "C:\\Users\\freez\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\freez\\.nuget\\packages\\mono.cecil\\0.11.4\\mono.cecil.0.11.4.nupkg.sha512",
-    "C:\\Users\\freez\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512",
-    "C:\\Users\\freez\\.nuget\\packages\\nanoray.extractsinglefileapplicationresourcetask\\1.0.0\\nanoray.extractsinglefileapplicationresourcetask.1.0.0.nupkg.sha512",
-    "C:\\Users\\freez\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
-    "C:\\Users\\freez\\.nuget\\packages\\nickel.modbuildconfig\\0.2.0\\nickel.modbuildconfig.0.2.0.nupkg.sha512",
+    "C:\\Users\\freez\\.nuget\\packages\\nickel.modbuildconfig\\0.4.0\\nickel.modbuildconfig.0.4.0.nupkg.sha512",
     "C:\\Users\\freez\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\freez\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
     "C:\\Users\\freez\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",

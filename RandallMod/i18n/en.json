@@ -47,6 +47,11 @@
         "AuxiliaryShieldsStatus": {
             "name": "Auxiliary Shields",
             "description": "On turn start, gain 1 Half Shield."
+        },
+
+        "SynergizeCardAction": {
+            "name": "Synergize",
+            "description": "Applies a Synergy Charge trait to another card."
         }
     },
     "artifact": {
