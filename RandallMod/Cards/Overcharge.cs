@@ -4,21 +4,21 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class SynergyEvade : Card
+internal sealed class Overcharge : Card
 {
     //Register
     public static void Register(IModHelper helper)
     {
-        helper.Content.Cards.RegisterCard("SynergyEvade", new()
+        helper.Content.Cards.RegisterCard("Overcharge", new()
         {
             CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
             Meta = new()
             {
                 deck = ModInit.Instance.RandallDeck.Deck,
-                rarity = Rarity.common,
+                rarity = Rarity.uncommon,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SynergyEvade", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "Overcharge", "name"]).Localize
         });
     }
 
@@ -26,7 +26,8 @@ internal sealed class SynergyEvade : Card
     public override CardData GetData(State state)
         => new()
         {
-            cost = 1,
+            cost = upgrade == Upgrade.B ? 3 : 1,
+            exhaust = true
         };
 
     //Actions
@@ -38,32 +39,16 @@ internal sealed class SynergyEvade : Card
         new AStatus
         {
             targetPlayer = true,
-            status = Status.evade,
+            status = ModInit.Instance.OverchargeStatus.Status,
             statusAmount = 1
         });
 
-        actions.Add(
-        new ASynergize
-        {
-            count = upgrade != Upgrade.B ? 1 : 2
-        });
-
-        actions.Add(
-        new AStatus
-        {
-            targetPlayer = true,
-            status = ModInit.Instance.ChargeUpStatus.Status,
-            statusAmount = 1
-        });
-
-        if (upgrade == Upgrade.A)
+        if (upgrade != Upgrade.None)
         {
             actions.Add(
-            new AStatus
+            new ASynergize
             {
-                targetPlayer = true,
-                status = Status.tempShield,
-                statusAmount = 1
+                count = upgrade == Upgrade.A ? 3 : 99
             });
         }
 

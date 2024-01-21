@@ -4,12 +4,12 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class SynergyEvade : Card
+internal sealed class Teamwork : Card
 {
     //Register
     public static void Register(IModHelper helper)
     {
-        helper.Content.Cards.RegisterCard("SynergyEvade", new()
+        helper.Content.Cards.RegisterCard("Teamwork", new()
         {
             CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
             Meta = new()
@@ -18,7 +18,7 @@ internal sealed class SynergyEvade : Card
                 rarity = Rarity.common,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SynergyEvade", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "Teamwork", "name"]).Localize
         });
     }
 
@@ -35,37 +35,16 @@ internal sealed class SynergyEvade : Card
         List<CardAction> actions = [];
 
         actions.Add(
-        new AStatus
-        {
-            targetPlayer = true,
-            status = Status.evade,
-            statusAmount = 1
-        });
-
-        actions.Add(
         new ASynergize
         {
-            count = upgrade != Upgrade.B ? 1 : 2
+            count = upgrade != Upgrade.A ? 2 : 4
         });
 
         actions.Add(
-        new AStatus
+        new ADrawCard
         {
-            targetPlayer = true,
-            status = ModInit.Instance.ChargeUpStatus.Status,
-            statusAmount = 1
+            count = upgrade != Upgrade.B ? 2 : 3
         });
-
-        if (upgrade == Upgrade.A)
-        {
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = true,
-                status = Status.tempShield,
-                statusAmount = 1
-            });
-        }
 
         return actions;
     }

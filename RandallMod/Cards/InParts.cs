@@ -4,12 +4,12 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class SynergyEvade : Card
+internal sealed class InParts : Card
 {
     //Register
     public static void Register(IModHelper helper)
     {
-        helper.Content.Cards.RegisterCard("SynergyEvade", new()
+        helper.Content.Cards.RegisterCard("InParts", new()
         {
             CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
             Meta = new()
@@ -18,7 +18,7 @@ internal sealed class SynergyEvade : Card
                 rarity = Rarity.common,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SynergyEvade", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "InParts", "name"]).Localize
         });
     }
 
@@ -26,7 +26,8 @@ internal sealed class SynergyEvade : Card
     public override CardData GetData(State state)
         => new()
         {
-            cost = 1,
+            cost = 0,
+
         };
 
     //Actions
@@ -38,31 +39,41 @@ internal sealed class SynergyEvade : Card
         new AStatus
         {
             targetPlayer = true,
-            status = Status.evade,
+            status = ModInit.Instance.HalfEvadeStatus.Status,
             statusAmount = 1
-        });
-
-        actions.Add(
-        new ASynergize
-        {
-            count = upgrade != Upgrade.B ? 1 : 2
         });
 
         actions.Add(
         new AStatus
         {
             targetPlayer = true,
-            status = ModInit.Instance.ChargeUpStatus.Status,
+            status = ModInit.Instance.HalfShieldStatus.Status,
+            statusAmount = 1
+        });
+
+        actions.Add(
+        new AStatus
+        {
+            targetPlayer = true,
+            status = ModInit.Instance.HalfCardStatus.Status,
             statusAmount = 1
         });
 
         if (upgrade == Upgrade.A)
         {
             actions.Add(
+            new ASynergize
+            {
+                count = 1
+            });
+        }
+        if (upgrade == Upgrade.B)
+        {
+            actions.Add(
             new AStatus
             {
                 targetPlayer = true,
-                status = Status.tempShield,
+                status = Status.energyFragment,
                 statusAmount = 1
             });
         }

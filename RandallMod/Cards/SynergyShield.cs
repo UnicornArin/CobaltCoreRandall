@@ -35,16 +35,17 @@ internal sealed class SynergyShield : Card
         List<CardAction> actions = [];
 
         actions.Add(
-        new ASynergize {
-            Count = 1
-        });
-
-        actions.Add(
         new AStatus
         {
             targetPlayer = true,
             status = Status.shield,
             statusAmount = 1
+        });
+
+        actions.Add(
+        new ASynergize
+        {
+            count = upgrade != Upgrade.B ? 1 : 2
         });
 
         actions.Add(
@@ -62,17 +63,6 @@ internal sealed class SynergyShield : Card
             {
                 targetPlayer = true,
                 status = Status.tempShield,
-                statusAmount = 1
-            });
-        }
-
-        if (upgrade == Upgrade.B)
-        {
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = false,
-                status = ModInit.Instance.HalfDamageStatus.Status,
                 statusAmount = 1
             });
         }

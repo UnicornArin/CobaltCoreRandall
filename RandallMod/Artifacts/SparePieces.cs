@@ -57,7 +57,7 @@ namespace RandallMod.Artifacts
                         c.QueueImmediate(
                             [new AStatus()
                             {
-                                status = ModInit.Instance.HalfTempShieldStatus.Status,
+                                status = ModInit.Instance.HalfCardStatus.Status,
                                 statusAmount = 1,
                                 targetPlayer = true,
                                 artifactPulse = Key()

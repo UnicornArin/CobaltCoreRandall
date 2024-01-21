@@ -1,5 +1,4 @@
-﻿using FMOD;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Nanoray.PluginManager;
@@ -12,15 +11,17 @@ using System.Reflection;
 
 namespace RandallMod
 {
-    public sealed class ModInit : SimpleMod
+    //removed sealed to try and hook artifact like behavior
+    public /*sealed*/ class ModInit : SimpleMod, IStatusRenderHook
     {
-
+        
         internal static ModInit Instance { get; private set; } = null!;
 
         internal Harmony Harmony { get; }
-        //Here would be a kokoro reference if I needed one
+        internal IKokoroApi KokoroApi { get; }
         internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
         internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
+
 
         //Initialize Statuses
         internal IStatusEntry ChargeUpStatus { get; }
@@ -31,6 +32,7 @@ namespace RandallMod
         internal IStatusEntry CoPilotStatus { get; }
         internal IStatusEntry AuxiliaryShieldsStatus { get; }
         internal IStatusEntry OverchargeStatus { get; }
+        internal IStatusEntry HalfCardStatus { get; }
 
         //Initialize TraitSprites
         internal ISpriteEntry SynergyChargeSprite { get; private set; } = null!;
@@ -43,7 +45,8 @@ namespace RandallMod
         internal static IReadOnlyList<Type> CommonArtifacts { get; } = [
             typeof(SparePieces),
             typeof(EnhancedMaterials),
-            typeof(PatchingProgram)
+            typeof(PatchingProgram),
+            typeof(Teapot)
         ];
         internal static IReadOnlyList<Type> BossArtifacts { get; } = [
         ];
@@ -58,20 +61,30 @@ namespace RandallMod
         {
             typeof(AttackAndAHalf),
             typeof(MasterOfNone),
+            typeof(Teamwork),
+            typeof(EvadeV1_5),
+            typeof(ShieldV1_5),
+            typeof(InParts),
+            typeof(Magnify),
         };
         internal static readonly Type[] UncommonCards = new Type[]
         {
             typeof(EmergencyProtocol),
+            typeof(Overcharge),
+            typeof(SlowBarrage),
         };
         internal static readonly Type[] RareCards = new Type[]
         {
             typeof(EnhancedMagnify),
         };
 
-        public ModInit(IPluginPackage<IModManifest> package, IModHelper helper, ILogger logger) : base(package, helper, logger)
+        public ModInit(IPluginPackage<IModManifest> package, IModHelper helper, ILogger logger) : base(package, helper, logger) 
         {
             //This is a constructor, logic goes here
             Instance = this;
+            //This is the Kokoro API registry
+            KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!;
+            KokoroApi.RegisterStatusRenderHook(this, 0);
 
             //i18n setup (This has to go on top for reasons
             this.AnyLocalizations = new JsonLocalizationProvider(
@@ -106,8 +119,15 @@ namespace RandallMod
             //Commons
             AttackAndAHalf.Register(helper);
             MasterOfNone.Register(helper);
+            Teamwork.Register(helper);
+            EvadeV1_5.Register(helper);
+            ShieldV1_5.Register(helper);
+            InParts.Register(helper);
+            Magnify.Register(helper);
             //Uncommons
             EmergencyProtocol.Register(helper);
+            Overcharge.Register(helper);
+            SlowBarrage.Register(helper);
             //Rares
             EnhancedMagnify.Register(helper);
             CoPilot.Register(helper);
@@ -188,6 +208,17 @@ namespace RandallMod
                 Name = this.AnyLocalizations.Bind(["status", "HalfTempShield", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "HalfTempShield", "description"]).Localize
             });
+            HalfCardStatus = helper.Content.Statuses.RegisterStatus("HalfCardStatus", new()
+            {
+                Definition = new()
+                {
+                    icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconHalfCard.png")).Sprite,
+                    color = new("3e8ad5"),
+                    isGood = true
+                },
+                Name = this.AnyLocalizations.Bind(["status", "HalfCard", "name"]).Localize,
+                Description = this.AnyLocalizations.Bind(["status", "HalfCard", "description"]).Localize
+            });
             HalfDamageStatus = helper.Content.Statuses.RegisterStatus("HalfDamage", new()
             {
                 Definition = new()
@@ -231,12 +262,14 @@ namespace RandallMod
                 },
                 Name = this.AnyLocalizations.Bind(["status", "OverchargeStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "OverchargeStatus", "description"]).Localize
+
             });
 
             //Register Artifacts
             SparePieces.Register(helper);
             EnhancedMaterials.Register(helper);
             PatchingProgram.Register(helper);
+            Teapot.Register(helper);
 
             //Register additional sprites
             SynergyChargeSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconChargeUp2.png"));
@@ -246,6 +279,8 @@ namespace RandallMod
             //This is an instance method, THIS instance is calling it, this. can be removed
             //passing the package info as a parameter
             this.ApplyHarmonyPatches(package);
+            Harmony harmony = new Harmony(package.Manifest.UniqueName);
+            CustomTTGlossary.ApplyPatches(harmony);
         }
 
         private void ApplyHarmonyPatches(IPluginPackage<IModManifest> package)
@@ -272,6 +307,11 @@ namespace RandallMod
                 //Card Render Transpiler for Traits
                 original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.Render)),
                 transpiler: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.Card_Render_Transpiler)))
+            );
+
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.GetActionsOverridden)),
+                postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.HarmonyPostfix_Card_GetActionsOverridden)))
             );
         }
 
@@ -333,6 +373,7 @@ namespace RandallMod
             Partial_Hurt_Handler(g, __instance);
             Partial_Enemy_Hurt_Handler(g, __instance);
             Partial_Attack_Handler(g, __instance);
+            Partial_Card_Handler(g, __instance);
         }
 
         private static void Partial_Status_Handler(G g, Combat __instance, Status partialStatus, Status fullStatus)
@@ -406,7 +447,7 @@ namespace RandallMod
         private static void Partial_Attack_Handler(G g, Combat __instance)
         {
             var partialStatus = ModInit.Instance.ChargeUpStatus.Status;
-            var toAdd = g.state.ship.Get(partialStatus) / 3;
+            var toAdd = g.state.ship.Get(partialStatus) / (3 + g.state.ship.Get(ModInit.Instance.OverchargeStatus.Status));
             if (toAdd == 0)
                 return;
             IEnumerable<CardAction> allActions = __instance.cardActions;
@@ -419,9 +460,43 @@ namespace RandallMod
                     return;
 
             __instance.QueueImmediate([
-                new AAttack() { damage = toAdd },
-                new AStatus() { targetPlayer = true, status = partialStatus, statusAmount = -toAdd * 3 },
+                new AAttack() { damage = Card.GetActualDamage(g.state, toAdd + g.state.ship.Get(ModInit.Instance.OverchargeStatus.Status)) },
+                new AStatus() { targetPlayer = true, status = partialStatus, statusAmount = (toAdd + g.state.ship.Get(ModInit.Instance.OverchargeStatus.Status)) * -3 },
             ]);
+        }
+
+        private static void Partial_Card_Handler (G g, Combat __instance)
+        {
+            var partialStatus = ModInit.Instance.HalfCardStatus.Status;
+            var toAdd = g.state.ship.Get(partialStatus) / 2;
+            if (toAdd == 0)
+                return;
+            IEnumerable<CardAction> allActions = __instance.cardActions;
+            if (__instance.currentCardAction is not null)
+                //Append all card actions to the queue check, might not be needed
+                allActions = allActions.Append(__instance.currentCardAction);
+            foreach (var action in allActions)
+                //This checks if any action in the action queue contains the status to be checked, if so we don't execute this code
+                if (action is ADrawCard statusAction && statusAction.count < 0)
+                    return;
+
+            __instance.QueueImmediate([
+                new ADrawCard() { count = toAdd},
+                new AStatus() { targetPlayer = true, status = partialStatus, statusAmount = toAdd * -2 },
+            ]);
+        }
+
+        //This supposedly changes the tooltip?
+        public List<Tooltip> OverrideStatusTooltips(Status status, int amount, Ship? ship, List<Tooltip> tooltips)
+        {
+            var overchargeValue = ship is null ? 0 : ship.Get(Instance.OverchargeStatus.Status);
+            for (int i = 0; i < tooltips.Count; i++)
+            {
+                var tooltip = tooltips[i];
+                if (tooltip is TTGlossary glossary && glossary.key == $"status.{ModInit.Instance.ChargeUpStatus.Status.Key()}")
+                    glossary.vals = new object[] { $"<c=boldPink>{overchargeValue + 3}</c>", $"<c=boldPink>{overchargeValue + 1}</c>" };
+            }
+            return tooltips;
         }
     }
 }

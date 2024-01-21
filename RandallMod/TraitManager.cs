@@ -9,6 +9,10 @@ using HarmonyLib;
 using Nanoray.Shrike.Harmony;
 using Nanoray.Shrike;
 using Microsoft.Extensions.Logging;
+using Nanoray.PluginManager;
+using Nickel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace RandallMod
 {
@@ -72,5 +76,34 @@ namespace RandallMod
         public static void SetSynergized(this Card self, bool value)
             => ModInit.Instance.Helper.ModData.SetModData(self, "IsSynergized", value);
 
+        /*private static void ApplyHarmonyPatches(IPluginPackage<IModManifest> package)
+        {
+            //Setup Harmony, create a new Harmony named harmony, harmony harmony... harmony
+            Harmony harmony = new Harmony(package.Manifest.UniqueName);
+
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.GetActionsOverridden)),
+                postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.SynergizeTrait)))
+            );
+        }*/
+
+        public static void HarmonyPostfix_Card_GetActionsOverridden(Card __instance, List<CardAction> __result) {
+            if (__instance.IsSynergized()) {
+                
+                __result.Add(ModInit.Instance.KokoroApi.Actions.MakeHidden(new AStatus()
+                {
+                    status = ModInit.Instance.ChargeUpStatus.Status,
+                    statusAmount = 1,
+                    targetPlayer = true
+                })
+                );
+
+                __result.Add(ModInit.Instance.KokoroApi.Actions.MakeHidden(new ARemoveSynergy()
+                {
+                    CardId = __instance.uuid
+                })
+                );
+            }
+        }
     }
 }

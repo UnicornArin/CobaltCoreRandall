@@ -11,9 +11,16 @@
         "SynergyShield": { "name": "Synergy Shield" },
 
         "AttackAndAHalf": { "name": "Fragmented Attack" },
+        "Teamwork": { "name": "Teamwork" },
         "MasterOfNone": { "name": "Master Of None" },
+        "EvadeV1_5": { "name": "Evade v1.5" },
+        "ShieldV1_5": { "name": "Shield v1.5" },
+        "InParts": { "name": "Assembly Required" },
+        "Magnify": { "name": "Magnify" },
 
         "EmergencyProtocol": { "name": "Emergency Protocol" },
+        "Overcharge": { "name": "Overcharge" },
+        "SlowBarrage": { "name": "Slow Barrage" },
 
         "EnhancedMagnify": { "name": "Enhanced Magnify" },
         "CoPilot": { "name": "Co-Pilot" },
@@ -22,50 +29,63 @@
     "status": {
         "ChargeUp": {
             "name": "Synergy Charge",
-            "description": "When you accumulate 3 <c=3e8ad5>Synergy Charges</c>, lose them and shoot for 1 damage."
+            "description": "When you accumulate {0} <c=status>SYNERGY CHARGES</c>, lose them and shoot for {1} damage."
         },
         "HalfEvade": {
             "name": "Half Evade",
-            "description": "Combine 2 to gain 1 Evade!"
+            "description": "Combine 2 to gain 1 <c=status>EVADE</c>!"
         },
         "HalfShield": {
             "name": "Half Shield",
-            "description": "Combine 2 to gain 1 Shield!"
+            "description": "Combine 2 to gain 1 <c=status>SHIELD</c>!"
         },
         "HalfTempShield": {
             "name": "Half Temp Shield",
-            "description": "Combine 2 to gain 1 Temp Shield!"
+            "description": "Combine 2 to gain 1 <c=status>TEMP SHIELD</c>!"
         },
         "HalfDamage": {
             "name": "Half Damage",
             "description": "Combine 2 to take 1 damage."
         },
+        "HalfCard": {
+            "name": "Half Card",
+            "description": "Combine 2 to draw 1 card."
+        },
         "CoPilotStatus": {
             "name": "Co-Pilot",
-            "description": "On turn start, gain 1 Half Evade."
+            "description": "On turn start, gain 1 <c=status>HALF EVADE</c>."
         },
         "AuxiliaryShieldsStatus": {
             "name": "Auxiliary Shields",
-            "description": "On turn start, gain 1 Half Shield."
+            "description": "On turn start, gain 1 <c=status>HALF SHIELD</c>."
         },
-
-        "SynergizeCardAction": {
-            "name": "Synergize",
-            "description": "Applies a Synergy Charge trait to another card."
+        "OverchargeStatus": {
+            "name": "Overcharge",
+            "description": "You need <c=status>{0}</c> extra <c=status>SYNERGY CHARGE</c> to fire, but you deal {0} extra damage when you do."
         }
     },
     "artifact": {
         "SparePiecesArtifact": {
             "name": "SPARE PIECES",
-            "description": "On turn start: gain 1 random Half Evade, Half Shield or Half Temp Shield."
+            "description": "On turn start: gain 1 random <c=status>HALF EVADE</c>, <c=status>HALF SHIELD</c> or <c=status>HALF CARD</c>."
         },
         "EnhancedMaterialsArtifact": {
             "name": "ENHANCED MATERIALS",
-            "description": "On pickup: gain 1 max hull and 1 max shield, heal 2 hull."
+            "description": "On pickup: gain 1 <c=status>MAX HULL</c> and 1 <c=status>MAX SHIELD</c>, heal 2 hull."
         },
         "PatchingProgramArtifact": {
             "name": "PATCHING PROGRAM",
             "description": "On pickup: select a card to upgrade."
+        },
+        "TeapotArtifact": {
+            "name": "TEAPOT",
+            "description": "On turn start: A card in deck, discard or hand becomes Synergized."
+        }
+    },
+    "action": {
+        "ASynergize": {
+            "name": "Synergize",
+            "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in deck, then discard, then hand."
         }
     }
 }

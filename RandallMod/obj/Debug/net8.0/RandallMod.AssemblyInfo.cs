@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RandallMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c2a6b9db6d7b92ba9b97ab9b443f2e03590b0b0f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d11d977d36c25191a2c24844041c743b4e531182")]
 [assembly: System.Reflection.AssemblyProductAttribute("RandallMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RandallMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
