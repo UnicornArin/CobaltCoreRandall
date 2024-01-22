@@ -12,7 +12,7 @@ using System.Reflection;
 namespace RandallMod
 {
     //removed sealed to try and hook artifact like behavior
-    public /*sealed*/ class ModInit : SimpleMod, IStatusRenderHook
+    public sealed class ModInit : SimpleMod, IStatusRenderHook
     {
         
         internal static ModInit Instance { get; private set; } = null!;
@@ -33,6 +33,7 @@ namespace RandallMod
         internal IStatusEntry AuxiliaryShieldsStatus { get; }
         internal IStatusEntry OverchargeStatus { get; }
         internal IStatusEntry HalfCardStatus { get; }
+        internal IStatusEntry ArchiveStatus { get; }
 
         //Initialize TraitSprites
         internal ISpriteEntry SynergyChargeSprite { get; private set; } = null!;
@@ -49,6 +50,7 @@ namespace RandallMod
             typeof(Teapot)
         ];
         internal static IReadOnlyList<Type> BossArtifacts { get; } = [
+            typeof(DivertedCharge)
         ];
 
         //Initialize Cards
@@ -72,10 +74,15 @@ namespace RandallMod
             typeof(EmergencyProtocol),
             typeof(Overcharge),
             typeof(SlowBarrage),
+            typeof(Rondell),
+            typeof(SynergyStrike),
         };
         internal static readonly Type[] RareCards = new Type[]
         {
             typeof(EnhancedMagnify),
+            typeof(Archive),
+            typeof(CoPilot),
+            typeof(AuxiliaryShields),
         };
 
         public ModInit(IPluginPackage<IModManifest> package, IModHelper helper, ILogger logger) : base(package, helper, logger) 
@@ -104,14 +111,6 @@ namespace RandallMod
                 Name = this.AnyLocalizations.Bind(["character", "name"]).Localize
             });
 
-            helper.Content.Characters.RegisterCharacter("Randall", new()
-            {
-                Deck = RandallDeck.Deck,
-                Description = this.AnyLocalizations.Bind(["character", "description"]).Localize,
-                BorderSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Character/char_randall.png")).Sprite,
-                StarterCardTypes = StarterCards,
-            });
-
             //Register cards:
             //Starters
             SynergyEvade.Register(helper);
@@ -128,10 +127,13 @@ namespace RandallMod
             EmergencyProtocol.Register(helper);
             Overcharge.Register(helper);
             SlowBarrage.Register(helper);
+            Rondell.Register(helper);
+            SynergyStrike.Register(helper);
             //Rares
             EnhancedMagnify.Register(helper);
             CoPilot.Register(helper);
             AuxiliaryShields.Register(helper);
+            Archive.Register(helper);
 
             //CharacterAnimations
             helper.Content.Characters.RegisterCharacterAnimation("Neutral", new()
@@ -161,6 +163,14 @@ namespace RandallMod
                 Deck = RandallDeck.Deck,
                 LoopTag = "mini",
                 Frames = [helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Character/mini/0.png")).Sprite]
+            });
+
+            helper.Content.Characters.RegisterCharacter("Randall", new()
+            {
+                Deck = RandallDeck.Deck,
+                Description = this.AnyLocalizations.Bind(["character", "description"]).Localize,
+                BorderSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Character/char_randall.png")).Sprite,
+                StarterCardTypes = StarterCards,
             });
 
             //Define Statuses
@@ -252,6 +262,17 @@ namespace RandallMod
                 Name = this.AnyLocalizations.Bind(["status", "AuxiliaryShieldsStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "AuxiliaryShieldsStatus", "description"]).Localize
             });
+            ArchiveStatus = helper.Content.Statuses.RegisterStatus("ArchiveStatus", new()
+            {
+                Definition = new()
+                {
+                    icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconArchives.png")).Sprite,
+                    color = new("3e8ad5"),
+                    isGood = false
+                },
+                Name = this.AnyLocalizations.Bind(["status", "ArchiveStatus", "name"]).Localize,
+                Description = this.AnyLocalizations.Bind(["status", "ArchiveStatus", "description"]).Localize
+            });
             OverchargeStatus = helper.Content.Statuses.RegisterStatus("OverchargeStatus", new()
             {
                 Definition = new()
@@ -265,11 +286,19 @@ namespace RandallMod
 
             });
 
+            //Reminder, Shockah hates it, need to fix
+            //But it works, we take those
+            ModInit.Instance.Helper.Events.RegisterBeforeArtifactsHook(nameof(Artifact.OnCombatEnd), (State state) =>
+            {
+                state.rewardsQueue.QueueImmediate(new ARemoveAllSynergy() { });
+            }, priority: 0);
+
             //Register Artifacts
             SparePieces.Register(helper);
             EnhancedMaterials.Register(helper);
             PatchingProgram.Register(helper);
             Teapot.Register(helper);
+            DivertedCharge.Register(helper);
 
             //Register additional sprites
             SynergyChargeSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconChargeUp2.png"));
@@ -312,6 +341,10 @@ namespace RandallMod
             harmony.Patch(
                 original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.GetActionsOverridden)),
                 postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.HarmonyPostfix_Card_GetActionsOverridden)))
+            );
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.GetAllTooltips)),
+                postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.HarmonyPostfix_Card_Tooltip)))
             );
         }
 

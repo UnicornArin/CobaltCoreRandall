@@ -21,10 +21,13 @@
         "EmergencyProtocol": { "name": "Emergency Protocol" },
         "Overcharge": { "name": "Overcharge" },
         "SlowBarrage": { "name": "Slow Barrage" },
+        "Rondell": { "name": "Rondell" },
+        "SynergyStrike": { "name": "Synergy Strike" },
 
         "EnhancedMagnify": { "name": "Enhanced Magnify" },
         "CoPilot": { "name": "Co-Pilot" },
-        "AuxiliaryShields": { "name": "Auxiliary Shields" }
+        "AuxiliaryShields": { "name": "Auxiliary Shields" },
+        "Archive": { "name": "Synergy Accelerator" }
     },
     "status": {
         "ChargeUp": {
@@ -53,15 +56,19 @@
         },
         "CoPilotStatus": {
             "name": "Co-Pilot",
-            "description": "On turn start, gain 1 <c=status>HALF EVADE</c>."
+            "description": "On turn start, gain {0} <c=status>HALF EVADE</c>, also <c=status>gain ONE ENERGY FRAGMENT</c>."
         },
         "AuxiliaryShieldsStatus": {
             "name": "Auxiliary Shields",
-            "description": "On turn start, gain 1 <c=status>HALF SHIELD</c>."
+            "description": "On turn start, gain {0} <c=status>HALF SHIELD</c>, also <c=status>gain ONE ENERGY FRAGMENT</c>."
         },
         "OverchargeStatus": {
             "name": "Overcharge",
             "description": "You need <c=status>{0}</c> extra <c=status>SYNERGY CHARGE</c> to fire, but you deal {0} extra damage when you do."
+        },
+        "ArchiveStatus": {
+            "name": "Synergy Accelerator",
+            "description": "On turn start, gain {0} <c=status>HALF CARD</c> and {0} cards become <c=status>SYNERGIZED</c>."
         }
     },
     "artifact": {
@@ -80,12 +87,22 @@
         "TeapotArtifact": {
             "name": "TEAPOT",
             "description": "On turn start: A card in deck, discard or hand becomes Synergized."
+        },
+        "DivertedChargeArtifact": {
+            "name": "DIVERTED CHARGE",
+            "description": "On turn start: Spend 2 <c=status>SYNERGY CHARGE</c> to gain 1 energy."
         }
     },
     "action": {
         "ASynergize": {
             "name": "Synergize",
             "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in deck, then discard, then hand."
+        }
+    },
+    "trait": {
+        "Synergized": {
+            "name": "Synergized",
+            "description":  "On play: gain 1 <c=status>SYNERGY CHARGE</c>, lose this trait."
         }
     }
 }

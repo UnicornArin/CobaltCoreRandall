@@ -9,8 +9,6 @@ namespace RandallMod;
 
 public sealed class ARemoveAllSynergy : CardAction
 {
-    [JsonProperty]
-    public required int CardId { get; init; }
 
     //Action
         public override void Begin(G g, State s, Combat c)

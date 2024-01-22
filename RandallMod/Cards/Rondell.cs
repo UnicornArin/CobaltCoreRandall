@@ -4,12 +4,12 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class SlowBarrage : Card
+internal sealed class Rondell : Card
 {
     //Register
     public static void Register(IModHelper helper)
     {
-        helper.Content.Cards.RegisterCard("SlowBarrage", new()
+        helper.Content.Cards.RegisterCard("Rondell", new()
         {
             CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
             Meta = new()
@@ -18,7 +18,7 @@ internal sealed class SlowBarrage : Card
                 rarity = Rarity.uncommon,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SlowBarrage", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "Rondell", "name"]).Localize
         });
     }
 
@@ -27,7 +27,8 @@ internal sealed class SlowBarrage : Card
         => new()
         {
             cost = 1,
-            recycle = upgrade == Upgrade.B ? false : true,
+            infinite = true,
+            retain = upgrade == Upgrade.B ? true : false,
         };
 
     //Actions
@@ -36,38 +37,37 @@ internal sealed class SlowBarrage : Card
         List<CardAction> actions = [];
 
         actions.Add(
-        new AAttack
+        new ASynergize
         {
-            damage = GetDmg(s, 1),
-            status = ModInit.Instance.HalfDamageStatus.Status,
-            statusAmount = 1,
+            count = upgrade == Upgrade.None ? 1 : 2
         });
 
-        if (upgrade != Upgrade.B)
+        actions.Add(
+        new AStatus
+        {
+            targetPlayer = true,
+            status = Status.energyFragment,
+            statusAmount = 1
+        });
+
+        actions.Add(
+        new AStatus
+        {
+            targetPlayer = true,
+            status = Status.tempShield,
+            statusAmount = upgrade != Upgrade.B ? 1 : 2
+        });
+
+        if (upgrade == Upgrade.B)
         {
             actions.Add(
             new AStatus
             {
                 targetPlayer = true,
-                status = ModInit.Instance.HalfEvadeStatus.Status,
-                statusAmount = 1
-            });
-        } else
-        {
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = true,
-                status = Status.evade,
+                status = ModInit.Instance.HalfTempShieldStatus.Status,
                 statusAmount = 1
             });
         }
-
-        actions.Add(
-        new ASynergize
-        {
-            count = upgrade == Upgrade.A ? 2 : 1
-        });
 
         return actions;
     }

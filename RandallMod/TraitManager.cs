@@ -105,5 +105,44 @@ namespace RandallMod
                 );
             }
         }
+
+        public static void HarmonyPostfix_Card_Tooltip(Card __instance, State s, bool showCardTraits, ref IEnumerable<Tooltip> __result)
+        {
+            if (!showCardTraits)
+                return;
+
+            //escape if trait not found
+            var isSynergized = IsSynergized(__instance);
+            if (!isSynergized)
+                return;
+            
+            static IEnumerable<Tooltip> ModifyTooltips(IEnumerable<Tooltip> tooltips)
+            {
+                /*bool yieldedFrogproof = false;
+
+                foreach (var tooltip in tooltips)
+                {
+                    if (!yieldedFrogproof && tooltip is TTGlossary glossary && glossary.key.StartsWith("cardtrait.") && glossary.key != "cardtrait.unplayable")
+                    {
+                        yield return Instance.Api.FrogproofCardTraitTooltip;
+                        yieldedFrogproof = true;
+                    }
+                    yield return tooltip;
+                }
+
+                if (!yieldedFrogproof)
+                    yield return Instance.Api.FrogproofCardTraitTooltip;*/
+
+                return [
+                new CustomTTGlossary(
+                    CustomTTGlossary.GlossaryType.action,
+                    () => ModInit.Instance.SynergyChargeSprite.Sprite,
+                    () => ModInit.Instance.Localizations.Localize(["trait", "Synergized", "name"]),
+                    () => ModInit.Instance.Localizations.Localize(["trait", "Synergized", "description"])
+                        )
+                ];
+            }
+            //__result = ModifyTooltips(__result);
+        }
     }
 }

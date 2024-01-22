@@ -4,12 +4,12 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class SlowBarrage : Card
+internal sealed class SynergyStrike : Card
 {
     //Register
     public static void Register(IModHelper helper)
     {
-        helper.Content.Cards.RegisterCard("SlowBarrage", new()
+        helper.Content.Cards.RegisterCard("SynergyStrike", new()
         {
             CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
             Meta = new()
@@ -18,7 +18,7 @@ internal sealed class SlowBarrage : Card
                 rarity = Rarity.uncommon,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SlowBarrage", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SynergyStrike", "name"]).Localize
         });
     }
 
@@ -26,8 +26,7 @@ internal sealed class SlowBarrage : Card
     public override CardData GetData(State state)
         => new()
         {
-            cost = 1,
-            recycle = upgrade == Upgrade.B ? false : true,
+            cost = 2,
         };
 
     //Actions
@@ -38,36 +37,27 @@ internal sealed class SlowBarrage : Card
         actions.Add(
         new AAttack
         {
-            damage = GetDmg(s, 1),
+            damage = GetDmg(s, upgrade != Upgrade.A ? 4 : 5),
             status = ModInit.Instance.HalfDamageStatus.Status,
-            statusAmount = 1,
+            statusAmount = 1
         });
-
-        if (upgrade != Upgrade.B)
-        {
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = true,
-                status = ModInit.Instance.HalfEvadeStatus.Status,
-                statusAmount = 1
-            });
-        } else
-        {
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = true,
-                status = Status.evade,
-                statusAmount = 1
-            });
-        }
 
         actions.Add(
         new ASynergize
         {
-            count = upgrade == Upgrade.A ? 2 : 1
+            count = 5
         });
+
+        if (upgrade == Upgrade.B)
+        {
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = Status.energyFragment,
+                statusAmount = 2
+            });
+        }
 
         return actions;
     }
