@@ -28,8 +28,9 @@ namespace RandallMod.Artifacts
 
         public override void OnTurnStart(State s, Combat c) {
             if (c.turn > 0) { 
-                Random r = new Random();
-                var value = r.Next(0, 2);
+
+                int value = s.rngActions.NextInt() % 3;
+                
                 switch (value)
                 {
                     case 0:

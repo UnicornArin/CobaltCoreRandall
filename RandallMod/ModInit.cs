@@ -510,7 +510,7 @@ namespace RandallMod
                 allActions = allActions.Append(__instance.currentCardAction);
             foreach (var action in allActions)
                 //This checks if any action in the action queue contains the status to be checked, if so we don't execute this code
-                if (action is ADrawCard statusAction && statusAction.count < 0)
+                if (action is AStatus statusAction && statusAction.status == partialStatus && statusAction.statusAmount < 0)
                     return;
 
             __instance.QueueImmediate([
