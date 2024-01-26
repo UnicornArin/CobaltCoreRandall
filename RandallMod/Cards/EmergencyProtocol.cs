@@ -15,7 +15,7 @@ internal sealed class EmergencyProtocol : Card
             Meta = new()
             {
                 deck = ModInit.Instance.RandallDeck.Deck,
-                rarity = Rarity.uncommon,
+                rarity = Rarity.rare,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
             Name = ModInit.Instance.AnyLocalizations.Bind(["card", "EmergencyProtocol", "name"]).Localize
@@ -27,7 +27,8 @@ internal sealed class EmergencyProtocol : Card
         => new()
         {
             cost = 2,
-            exhaust = true
+            exhaust = true,
+            retain = upgrade == Upgrade.B
         };
 
     //Actions
@@ -47,14 +48,14 @@ internal sealed class EmergencyProtocol : Card
         {
             targetPlayer = true,
             status = Status.energyLessNextTurn,
-            statusAmount = upgrade == Upgrade.B ? 1 : 2
+            statusAmount = upgrade == Upgrade.A ? 2 : 1
         });
         actions.Add(
         new AStatus
         {
             targetPlayer = true,
             status = Status.drawLessNextTurn,
-            statusAmount = upgrade == Upgrade.None ? 2 : upgrade == Upgrade.A ? 1 : 3
+            statusAmount = 2
         });
 
         return actions;

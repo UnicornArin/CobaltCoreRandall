@@ -13,17 +13,26 @@
         "AttackAndAHalf": { "name": "Fragmented Attack" },
         "Teamwork": { "name": "Teamwork" },
         "MasterOfNone": { "name": "Master Of None" },
-        "EvadeV1_5": { "name": "Evade v1.5" },
+        "Rondell": { "name": "Rondell" },
         "ShieldV1_5": { "name": "Shield v1.5" },
         "InParts": { "name": "Assembly Required" },
         "Magnify": { "name": "Magnify" },
 
-        "EmergencyProtocol": { "name": "Emergency Protocol" },
+        "EvadeV1_5": { "name": "Evade v1.5" },
+        "ParticleBeam": { "name": "Particle Beam" },
         "Overcharge": { "name": "Overcharge" },
         "SlowBarrage": { "name": "Slow Barrage" },
-        "Rondell": { "name": "Rondell" },
         "SynergyStrike": { "name": "Synergy Strike" },
+        "Cooperate": {
+            "name": "Cooperate",
+            "description": "Apply <c=cardtrait>Cheap</c> to all <c=cardtrait>Synzergized</c> cards."
+        },
+        "CompleteSet": {
+            "name": "Complete Set",
+            "description": "Completes all partial statuses."
+        },
 
+        "EmergencyProtocol": { "name": "Emergency Protocol" },
         "EnhancedMagnify": { "name": "Enhanced Magnify" },
         "CoPilot": { "name": "Co-Pilot" },
         "AuxiliaryShields": { "name": "Auxiliary Shields" },
@@ -69,6 +78,13 @@
         "ArchiveStatus": {
             "name": "Synergy Accelerator",
             "description": "On turn start, gain {0} <c=status>HALF CARD</c> and {0} cards become <c=status>SYNERGIZED</c>."
+        },
+        "DummyHalvesStatus": {
+            "name": "Partial Statuses",
+            "description": [
+                "Includes:",
+                "<c=status>Half Evade</c>, <c=status>Half Shield</c>, <c=status> Half Temp Shield</c>, <c=status> Half Card</c>, <c=status> Half Damage</c>, <c=status> Energy Fragment</c>, <c=status> Synergy Charge</c>."
+            ]
         }
     },
     "artifact": {
@@ -91,6 +107,18 @@
         "DivertedChargeArtifact": {
             "name": "DIVERTED CHARGE",
             "description": "On turn start: Spend 2 <c=status>SYNERGY CHARGE</c> to gain 1 energy."
+        },
+        "RepurposedPartsArtifact": {
+            "name": "HALF OF A COOKIE",
+            "description": "On turn start: Spend 1 random <c=status>Half Evade</c> or <c=status>Half Shield</c> or <c=status>Half Temp Shield</c> or <c=status>Half Card</c> or <c=status>Half Damage</c> to draw a card."
+        },
+        "BonusSynergyArtifact": {
+            "name": "SYNERGY BOOSTER",
+            "description": "Synergize actions affect <c=boldPink>1</c> more card."
+        },
+        "SynergyPowerArtifact": {
+            "name": "RESIDUAL POWER",
+            "description": "Playing <c=cardtrait>Synergized</c> cards also grants <c=boldPink>1</c> <c=status>Energy Fragment</c>."
         }
     },
     "action": {

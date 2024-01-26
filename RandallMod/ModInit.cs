@@ -34,6 +34,7 @@ namespace RandallMod
         internal IStatusEntry OverchargeStatus { get; }
         internal IStatusEntry HalfCardStatus { get; }
         internal IStatusEntry ArchiveStatus { get; }
+        internal IStatusEntry DummyHalvesStatus { get; }
 
         //Initialize TraitSprites
         internal ISpriteEntry SynergyChargeSprite { get; private set; } = null!;
@@ -47,10 +48,13 @@ namespace RandallMod
             typeof(SparePieces),
             typeof(EnhancedMaterials),
             typeof(PatchingProgram),
-            typeof(Teapot)
+            typeof(Teapot),
+            typeof(BonusSynergy)
         ];
         internal static IReadOnlyList<Type> BossArtifacts { get; } = [
-            typeof(DivertedCharge)
+            typeof(DivertedCharge),
+            typeof(RepurposedParts),
+            typeof(SynergyPower)
         ];
 
         //Initialize Cards
@@ -64,26 +68,33 @@ namespace RandallMod
             typeof(AttackAndAHalf),
             typeof(MasterOfNone),
             typeof(Teamwork),
-            typeof(EvadeV1_5),
+            typeof(Rondell),
             typeof(ShieldV1_5),
             typeof(InParts),
-            typeof(Magnify),
+            typeof(Magnify)
         };
         internal static readonly Type[] UncommonCards = new Type[]
         {
-            typeof(EmergencyProtocol),
+            typeof(EvadeV1_5),
+            typeof(CompleteSet),
+            typeof(ParticleBeam),
             typeof(Overcharge),
             typeof(SlowBarrage),
-            typeof(Rondell),
-            typeof(SynergyStrike),
+            typeof(Cooperate),
+            typeof(SynergyStrike)
         };
         internal static readonly Type[] RareCards = new Type[]
         {
+            typeof(EmergencyProtocol),
             typeof(EnhancedMagnify),
             typeof(Archive),
             typeof(CoPilot),
-            typeof(AuxiliaryShields),
+            typeof(AuxiliaryShields)
         };
+        internal static IEnumerable<Type> AllCards
+            => StarterCards.Concat(CommonCards).Concat(UncommonCards).Concat(RareCards)/*.Append(typeof(RandallExeCard))*/;
+        internal static IEnumerable<Type> AllArtifacts
+            => CommonArtifacts.Concat(BossArtifacts);
 
         public ModInit(IPluginPackage<IModManifest> package, IModHelper helper, ILogger logger) : base(package, helper, logger) 
         {
@@ -119,17 +130,20 @@ namespace RandallMod
             AttackAndAHalf.Register(helper);
             MasterOfNone.Register(helper);
             Teamwork.Register(helper);
-            EvadeV1_5.Register(helper);
             ShieldV1_5.Register(helper);
             InParts.Register(helper);
+            Rondell.Register(helper);
             Magnify.Register(helper);
             //Uncommons
-            EmergencyProtocol.Register(helper);
+            Cooperate.Register(helper);
             Overcharge.Register(helper);
             SlowBarrage.Register(helper);
-            Rondell.Register(helper);
+            EvadeV1_5.Register(helper);
             SynergyStrike.Register(helper);
+            CompleteSet.Register(helper);
+            ParticleBeam.Register(helper);
             //Rares
+            EmergencyProtocol.Register(helper);
             EnhancedMagnify.Register(helper);
             CoPilot.Register(helper);
             AuxiliaryShields.Register(helper);
@@ -150,6 +164,62 @@ namespace RandallMod
                 LoopTag = "squint",
                 Frames = Enumerable.Range(0, 4)
                 .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/squint/{i}.png")).Sprite)
+                .ToList()
+            });
+            helper.Content.Characters.RegisterCharacterAnimation("Accusatory", new()
+            {
+                Deck = RandallDeck.Deck,
+                LoopTag = "accusatory",
+                Frames = Enumerable.Range(0, 4)
+                .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/accusatory/{i}.png")).Sprite)
+                .ToList()
+            });
+            helper.Content.Characters.RegisterCharacterAnimation("Explain", new()
+            {
+                Deck = RandallDeck.Deck,
+                LoopTag = "explain",
+                Frames = Enumerable.Range(0, 4)
+                .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/explain/{i}.png")).Sprite)
+                .ToList()
+            });
+            helper.Content.Characters.RegisterCharacterAnimation("Facepalm", new()
+            {
+                Deck = RandallDeck.Deck,
+                LoopTag = "facepalm",
+                Frames = Enumerable.Range(0, 4)
+                .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/facepalm/{i}.png")).Sprite)
+                .ToList()
+            });
+            helper.Content.Characters.RegisterCharacterAnimation("Glee", new()
+            {
+                Deck = RandallDeck.Deck,
+                LoopTag = "glee",
+                Frames = Enumerable.Range(0, 4)
+                .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/glee/{i}.png")).Sprite)
+                .ToList()
+            });
+            helper.Content.Characters.RegisterCharacterAnimation("Misplay", new()
+            {
+                Deck = RandallDeck.Deck,
+                LoopTag = "misplay",
+                Frames = Enumerable.Range(0, 4)
+                .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/misplay/{i}.png")).Sprite)
+                .ToList()
+            });
+            helper.Content.Characters.RegisterCharacterAnimation("Smug", new()
+            {
+                Deck = RandallDeck.Deck,
+                LoopTag = "smug",
+                Frames = Enumerable.Range(0, 4)
+                .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/smug/{i}.png")).Sprite)
+                .ToList()
+            });
+            helper.Content.Characters.RegisterCharacterAnimation("Thoughtful", new()
+            {
+                Deck = RandallDeck.Deck,
+                LoopTag = "thoughtful",
+                Frames = Enumerable.Range(0, 4)
+                .Select(i => helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile($"assets/Character/thoughtful/{i}.png")).Sprite)
                 .ToList()
             });
             helper.Content.Characters.RegisterCharacterAnimation("GameOver", new()
@@ -246,7 +316,7 @@ namespace RandallMod
                 {
                     icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconCoPilot1.png")).Sprite,
                     color = new("3e8ad5"),
-                    isGood = false
+                    isGood = true
                 },
                 Name = this.AnyLocalizations.Bind(["status", "CoPilotStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "CoPilotStatus", "description"]).Localize
@@ -257,7 +327,7 @@ namespace RandallMod
                 {
                     icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconAuxiliaryShields.png")).Sprite,
                     color = new("3e8ad5"),
-                    isGood = false
+                    isGood = true
                 },
                 Name = this.AnyLocalizations.Bind(["status", "AuxiliaryShieldsStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "AuxiliaryShieldsStatus", "description"]).Localize
@@ -268,7 +338,7 @@ namespace RandallMod
                 {
                     icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconArchives.png")).Sprite,
                     color = new("3e8ad5"),
-                    isGood = false
+                    isGood = true
                 },
                 Name = this.AnyLocalizations.Bind(["status", "ArchiveStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "ArchiveStatus", "description"]).Localize
@@ -279,10 +349,22 @@ namespace RandallMod
                 {
                     icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconOvercharge.png")).Sprite,
                     color = new("3e8ad5"),
-                    isGood = false
+                    isGood = true
                 },
                 Name = this.AnyLocalizations.Bind(["status", "OverchargeStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "OverchargeStatus", "description"]).Localize
+
+            });
+            DummyHalvesStatus = helper.Content.Statuses.RegisterStatus("DummyHalvesStatus", new()
+            {
+                Definition = new()
+                {
+                    icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconDummyHalves.png")).Sprite,
+                    color = new("3e8ad5"),
+                    isGood = true
+                },
+                Name = this.AnyLocalizations.Bind(["status", "DummyHalvesStatus", "name"]).Localize,
+                Description = this.AnyLocalizations.Bind(["status", "DummyHalvesStatus", "description"]).Localize
 
             });
 
@@ -298,11 +380,18 @@ namespace RandallMod
             EnhancedMaterials.Register(helper);
             PatchingProgram.Register(helper);
             Teapot.Register(helper);
+            BonusSynergy.Register(helper);
+
             DivertedCharge.Register(helper);
+            RepurposedParts.Register(helper);
+            SynergyPower.Register(helper);
 
             //Register additional sprites
             SynergyChargeSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconChargeUp2.png"));
             IconSynzergize = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconSynergize.png"));
+
+            //Dialogue patching
+            Dialogue.Inject();
 
             //This has to be at the end, this applies all Harmony patches
             //This is an instance method, THIS instance is calling it, this. can be removed
@@ -426,7 +515,7 @@ namespace RandallMod
                     return;
 
             __instance.QueueImmediate([
-                new AStatus() { targetPlayer = true, status = fullStatus, statusAmount = toAdd },
+                new AStatus() { timer = 0, targetPlayer = true, status = fullStatus, statusAmount = toAdd },
                 new AStatus() { targetPlayer = true, status = partialStatus, statusAmount = -toAdd * 2 },
             ]);
         }
@@ -449,7 +538,7 @@ namespace RandallMod
                     return;
 
             __instance.QueueImmediate([
-                new AHurt() { targetPlayer = true, hurtAmount = toAdd, hurtShieldsFirst = true },
+                new AHurt() { timer = 0, targetPlayer = true, hurtAmount = toAdd, hurtShieldsFirst = true },
                 new AStatus() { targetPlayer = true, status = partialStatus, statusAmount = -toAdd * 2 },
             ]);
         }
@@ -472,7 +561,7 @@ namespace RandallMod
                     return;
 
             __instance.QueueImmediate([
-                new AHurt() { targetPlayer = false, hurtAmount = toAdd, hurtShieldsFirst = true },
+                new AHurt() { timer = 0, targetPlayer = false, hurtAmount = toAdd, hurtShieldsFirst = true },
                 new AStatus() { targetPlayer = false, status = partialStatus, statusAmount = -toAdd * 2 },
             ]);
         }
@@ -493,7 +582,7 @@ namespace RandallMod
                     return;
 
             __instance.QueueImmediate([
-                new AAttack() { damage = Card.GetActualDamage(g.state, toAdd + g.state.ship.Get(ModInit.Instance.OverchargeStatus.Status)) },
+                new AAttack() { timer = 0, damage = Card.GetActualDamage(g.state, toAdd + g.state.ship.Get(ModInit.Instance.OverchargeStatus.Status)) },
                 new AStatus() { targetPlayer = true, status = partialStatus, statusAmount = (toAdd + g.state.ship.Get(ModInit.Instance.OverchargeStatus.Status)) * -3 },
             ]);
         }
@@ -514,7 +603,7 @@ namespace RandallMod
                     return;
 
             __instance.QueueImmediate([
-                new ADrawCard() { count = toAdd},
+                new ADrawCard() { timer = 0, count = toAdd},
                 new AStatus() { targetPlayer = true, status = partialStatus, statusAmount = toAdd * -2 },
             ]);
         }

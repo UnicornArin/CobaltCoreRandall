@@ -15,7 +15,7 @@ internal sealed class Rondell : Card
             Meta = new()
             {
                 deck = ModInit.Instance.RandallDeck.Deck,
-                rarity = Rarity.uncommon,
+                rarity = Rarity.common,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
             Name = ModInit.Instance.AnyLocalizations.Bind(["card", "Rondell", "name"]).Localize
@@ -26,9 +26,8 @@ internal sealed class Rondell : Card
     public override CardData GetData(State state)
         => new()
         {
-            cost = 1,
-            infinite = true,
-            retain = upgrade == Upgrade.B ? true : false,
+            cost = upgrade != Upgrade.B ? 1 : 2,
+            retain = true,
         };
 
     //Actions

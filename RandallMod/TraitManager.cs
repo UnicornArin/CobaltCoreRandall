@@ -13,6 +13,7 @@ using Nanoray.PluginManager;
 using Nickel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using RandallMod.Artifacts;
 
 namespace RandallMod
 {
@@ -87,9 +88,24 @@ namespace RandallMod
             );
         }*/
 
-        public static void HarmonyPostfix_Card_GetActionsOverridden(Card __instance, List<CardAction> __result) {
+        public static void HarmonyPostfix_Card_GetActionsOverridden(State s, Card __instance, List<CardAction> __result) {
             if (__instance.IsSynergized()) {
-                
+
+                //This handles Bonus Energy Boss Artifact
+                var synergyPowerArtifact = s.EnumerateAllArtifacts().OfType<SynergyPower>().FirstOrDefault();
+                if (synergyPowerArtifact != null)
+                {
+                    __result.Add(ModInit.Instance.KokoroApi.Actions.MakeHidden(new AStatus()
+                    {
+                        status = Status.energyFragment,
+                        statusAmount = 1,
+                        targetPlayer = true,
+                        timer = 0.2,
+                        artifactPulse = synergyPowerArtifact.Key()
+                })
+                    );  
+                }
+
                 __result.Add(ModInit.Instance.KokoroApi.Actions.MakeHidden(new AStatus()
                 {
                     status = ModInit.Instance.ChargeUpStatus.Status,
@@ -118,21 +134,6 @@ namespace RandallMod
             
             static IEnumerable<Tooltip> ModifyTooltips(IEnumerable<Tooltip> tooltips)
             {
-                /*bool yieldedFrogproof = false;
-
-                foreach (var tooltip in tooltips)
-                {
-                    if (!yieldedFrogproof && tooltip is TTGlossary glossary && glossary.key.StartsWith("cardtrait.") && glossary.key != "cardtrait.unplayable")
-                    {
-                        yield return Instance.Api.FrogproofCardTraitTooltip;
-                        yieldedFrogproof = true;
-                    }
-                    yield return tooltip;
-                }
-
-                if (!yieldedFrogproof)
-                    yield return Instance.Api.FrogproofCardTraitTooltip;*/
-
                 return [
                 new CustomTTGlossary(
                     CustomTTGlossary.GlossaryType.action,

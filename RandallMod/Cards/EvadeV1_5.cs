@@ -15,7 +15,7 @@ internal sealed class EvadeV1_5 : Card
             Meta = new()
             {
                 deck = ModInit.Instance.RandallDeck.Deck,
-                rarity = Rarity.common,
+                rarity = Rarity.uncommon,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
             Name = ModInit.Instance.AnyLocalizations.Bind(["card", "EvadeV1_5", "name"]).Localize

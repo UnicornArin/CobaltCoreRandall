@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Audio;
 using Newtonsoft.Json;
 using Nickel;
 using RandallMod;
+using RandallMod.Artifacts;
 using System.Collections.Generic;
 
 namespace RandallMod;
@@ -17,6 +18,11 @@ public sealed class ASynergize : CardAction
 
     public override void Begin(G g, State s, Combat c)
     {
+        var bonusSynergyArtifact = s.EnumerateAllArtifacts().OfType<BonusSynergy>().FirstOrDefault();
+        if (bonusSynergyArtifact != null) {
+            count++;
+            bonusSynergyArtifact.Pulse();
+        }
         for (var i = 0; i < count; i++)
         {
             //The one time Shockah was wrong
