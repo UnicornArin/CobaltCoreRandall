@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class SlowBarrage : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("SlowBarrage", new()
         {
@@ -18,7 +19,8 @@ internal sealed class SlowBarrage : Card
                 rarity = Rarity.uncommon,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SlowBarrage", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SlowBarrage", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt12.png")).Sprite
         });
     }
 
@@ -40,7 +42,7 @@ internal sealed class SlowBarrage : Card
         {
             damage = GetDmg(s, 1),
             status = ModInit.Instance.HalfDamageStatus.Status,
-            statusAmount = 1,
+            statusAmount = 1
         });
 
         if (upgrade != Upgrade.B)
@@ -50,7 +52,8 @@ internal sealed class SlowBarrage : Card
             {
                 targetPlayer = true,
                 status = ModInit.Instance.HalfEvadeStatus.Status,
-                statusAmount = 1
+                statusAmount = 1,
+                timer = 0.2
             });
         } else
         {

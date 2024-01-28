@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class SynergyEvade : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("SynergyEvade", new()
         {
@@ -18,7 +19,8 @@ internal sealed class SynergyEvade : Card
                 rarity = Rarity.common,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SynergyEvade", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "SynergyEvade", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt1.png")).Sprite
         });
     }
 

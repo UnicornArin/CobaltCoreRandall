@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class EnhancedMagnify : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("EnhancedMagnify", new()
         {
@@ -18,7 +19,8 @@ internal sealed class EnhancedMagnify : Card
                 rarity = Rarity.rare,
                 upgradesTo = [Upgrade.A, Upgrade.B],
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "EnhancedMagnify", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "EnhancedMagnify", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt16.png")).Sprite
         });
     }
 
@@ -27,7 +29,7 @@ internal sealed class EnhancedMagnify : Card
         => new()
         {
             cost = upgrade != Upgrade.A ? 4 : 3,
-            exhaust = upgrade != Upgrade.B
+            exhaust = true
         };
 
     //Actions
@@ -42,6 +44,17 @@ internal sealed class EnhancedMagnify : Card
             status = Status.powerdrive,
             statusAmount = 1
         });
+
+        if (upgrade == Upgrade.B)
+        {
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = Status.overdrive,
+                statusAmount = 2
+            });
+        }
 
         return actions;
     }

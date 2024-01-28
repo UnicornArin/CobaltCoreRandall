@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class Magnify : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("Magnify", new()
         {
@@ -18,7 +19,8 @@ internal sealed class Magnify : Card
                 rarity = Rarity.common,
                 upgradesTo = [Upgrade.A, Upgrade.B],
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "Magnify", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "Magnify", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt10.png")).Sprite
         });
     }
 
@@ -48,7 +50,7 @@ internal sealed class Magnify : Card
             actions.Add(
             new ASynergize
             {
-                count = 2
+                count = 3
             });
         }
 
@@ -58,8 +60,9 @@ internal sealed class Magnify : Card
             new AStatus
             {
                 targetPlayer = true,
-                status = Status.tempShield,
-                statusAmount = 1
+                status = ModInit.Instance.HalfTempShieldStatus.Status,
+                statusAmount = 1,
+                timer = 0.2
             });
         }
 

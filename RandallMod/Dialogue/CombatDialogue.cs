@@ -1063,7 +1063,7 @@ internal static class CombatDialogue
                 new CustomSay()
                 {
                     who = randall,
-                    Text = "No, we're not visiting Cleo.",
+                    Text = "No, we're not visiting Cleo for a repair.",
                     loopTag = "misplay"
                 }
             }

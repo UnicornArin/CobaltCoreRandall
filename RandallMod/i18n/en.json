@@ -25,7 +25,7 @@
         "SynergyStrike": { "name": "Synergy Strike" },
         "Cooperate": {
             "name": "Cooperate",
-            "description": "Apply <c=cardtrait>Cheap</c> to all <c=cardtrait>Synzergized</c> cards."
+            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synzergized</c> cards."
         },
         "CompleteSet": {
             "name": "Complete Set",

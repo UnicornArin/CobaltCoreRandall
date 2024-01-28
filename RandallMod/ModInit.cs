@@ -124,30 +124,30 @@ namespace RandallMod
 
             //Register cards:
             //Starters
-            SynergyEvade.Register(helper);
-            SynergyShield.Register(helper);
+            SynergyEvade.Register(package, helper);
+            SynergyShield.Register(package, helper);
             //Commons
-            AttackAndAHalf.Register(helper);
-            MasterOfNone.Register(helper);
-            Teamwork.Register(helper);
-            ShieldV1_5.Register(helper);
-            InParts.Register(helper);
-            Rondell.Register(helper);
-            Magnify.Register(helper);
+            AttackAndAHalf.Register(package, helper);
+            MasterOfNone.Register(package, helper);
+            Teamwork.Register(package, helper);
+            ShieldV1_5.Register(package, helper);
+            InParts.Register(package, helper);
+            Rondell.Register(package, helper);
+            Magnify.Register(package, helper);
             //Uncommons
-            Cooperate.Register(helper);
-            Overcharge.Register(helper);
-            SlowBarrage.Register(helper);
-            EvadeV1_5.Register(helper);
-            SynergyStrike.Register(helper);
-            CompleteSet.Register(helper);
-            ParticleBeam.Register(helper);
+            Cooperate.Register(package, helper);
+            Overcharge.Register(package, helper);
+            SlowBarrage.Register(package, helper);
+            EvadeV1_5.Register(package, helper);
+            SynergyStrike.Register(package, helper);
+            CompleteSet.Register(package, helper);
+            ParticleBeam.Register(package, helper);
             //Rares
-            EmergencyProtocol.Register(helper);
-            EnhancedMagnify.Register(helper);
-            CoPilot.Register(helper);
-            AuxiliaryShields.Register(helper);
-            Archive.Register(helper);
+            EmergencyProtocol.Register(package, helper);
+            EnhancedMagnify.Register(package, helper);
+            CoPilot.Register(package, helper);
+            AuxiliaryShields.Register(package, helper);
+            Archive.Register(package, helper);
 
             //CharacterAnimations
             helper.Content.Characters.RegisterCharacterAnimation("Neutral", new()

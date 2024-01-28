@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class InParts : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("InParts", new()
         {
@@ -18,7 +19,8 @@ internal sealed class InParts : Card
                 rarity = Rarity.common,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "InParts", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "InParts", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt9.png")).Sprite
         });
     }
 
@@ -40,7 +42,8 @@ internal sealed class InParts : Card
         {
             targetPlayer = true,
             status = ModInit.Instance.HalfEvadeStatus.Status,
-            statusAmount = 1
+            statusAmount = 1,
+            timer = 0.2
         });
 
         actions.Add(
@@ -48,7 +51,8 @@ internal sealed class InParts : Card
         {
             targetPlayer = true,
             status = ModInit.Instance.HalfShieldStatus.Status,
-            statusAmount = 1
+            statusAmount = 1,
+            timer = 0.2
         });
 
         actions.Add(
@@ -56,7 +60,8 @@ internal sealed class InParts : Card
         {
             targetPlayer = true,
             status = ModInit.Instance.HalfCardStatus.Status,
-            statusAmount = 1
+            statusAmount = 1,
+            timer = 0.2
         });
 
         if (upgrade == Upgrade.A)
@@ -74,7 +79,8 @@ internal sealed class InParts : Card
             {
                 targetPlayer = true,
                 status = Status.energyFragment,
-                statusAmount = 1
+                statusAmount = 1,
+                timer = 0.2
             });
         }
 

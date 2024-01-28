@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class ParticleBeam : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("ParticleBeam", new()
         {
@@ -19,6 +20,7 @@ internal sealed class ParticleBeam : Card
                 upgradesTo = [Upgrade.A, Upgrade.B],
             },
             Name = ModInit.Instance.AnyLocalizations.Bind(["card", "ParticleBeam", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt17.png")).Sprite
         });
     }
 
@@ -40,7 +42,8 @@ internal sealed class ParticleBeam : Card
             {
                 targetPlayer = true,
                 status = Status.energyFragment,
-                statusAmount = 1
+                statusAmount = 1,
+                timer = 0.2
             });
         }
 
@@ -48,7 +51,8 @@ internal sealed class ParticleBeam : Card
         {
             targetPlayer = true,
             status = ModInit.Instance.HalfDamageStatus.Status,
-            statusAmount = 1
+            statusAmount = 1,
+            timer = 0.2
         });
 
         actions.Add(new AVariableHint

@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class CompleteSet : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("CompleteSet", new()
         {
@@ -19,6 +20,7 @@ internal sealed class CompleteSet : Card
                 upgradesTo = [Upgrade.A, Upgrade.B],
             },
             Name = ModInit.Instance.AnyLocalizations.Bind(["card", "CompleteSet", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt20.png")).Sprite
         });
     }
 

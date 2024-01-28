@@ -1,4 +1,5 @@
-﻿using Nickel;
+﻿using Nanoray.PluginManager;
+using Nickel;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace RandallMod;
 internal sealed class ShieldV1_5 : Card
 {
     //Register
-    public static void Register(IModHelper helper)
+    public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
         helper.Content.Cards.RegisterCard("ShieldV1_5", new()
         {
@@ -18,7 +19,8 @@ internal sealed class ShieldV1_5 : Card
                 rarity = Rarity.common,
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "ShieldV1_5", "name"]).Localize
+            Name = ModInit.Instance.AnyLocalizations.Bind(["card", "ShieldV1_5", "name"]).Localize,
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt7.png")).Sprite
         });
     }
 
@@ -47,7 +49,8 @@ internal sealed class ShieldV1_5 : Card
         {
             targetPlayer = true,
             status = ModInit.Instance.HalfShieldStatus.Status,
-            statusAmount = 1
+            statusAmount = 1,
+            timer = 0.2
         });
 
         if (upgrade == Upgrade.A)
@@ -65,7 +68,8 @@ internal sealed class ShieldV1_5 : Card
             {
                 targetPlayer = true,
                 status = ModInit.Instance.HalfTempShieldStatus.Status,
-                statusAmount = 1
+                statusAmount = 1,
+                timer = 0.2
             });
         }
 
