@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class Magnify : Card
+internal sealed class Magnify : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -40,6 +40,7 @@ internal sealed class Magnify : Card
         actions.Add(
         new AStatus
         {
+            dialogueSelector = ".RandallModMagnify",
             targetPlayer = true,
             status = Status.overdrive,
             statusAmount = 1
@@ -67,5 +68,38 @@ internal sealed class Magnify : Card
         }
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { Deck.peri.Key() },
+            lookup = new() { "RandallModMagnify" },
+            oncePerCombatTags = new() { "RandallModMagnifyTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = Deck.peri.Key(),
+                    Text = "That looks familiar.",
+                    loopTag = "squint"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = ModInit.Instance.RandallDeck.Deck.Key(),
+                            Text = "I'm just helping you do your job better.",
+                            loopTag = "explain"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

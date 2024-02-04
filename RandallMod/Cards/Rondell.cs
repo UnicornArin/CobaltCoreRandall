@@ -38,21 +38,6 @@ internal sealed class Rondell : Card
         List<CardAction> actions = [];
 
         actions.Add(
-        new ASynergize
-        {
-            count = upgrade == Upgrade.None ? 1 : 2
-        });
-
-        actions.Add(
-        new AStatus
-        {
-            targetPlayer = true,
-            status = Status.energyFragment,
-            statusAmount = 1,
-            timer = 0.2
-        });
-
-        actions.Add(
         new AStatus
         {
             targetPlayer = true,
@@ -71,6 +56,21 @@ internal sealed class Rondell : Card
                 timer = 0.2
             });
         }
+
+        actions.Add(
+        new AStatus
+        {
+            targetPlayer = true,
+            status = Status.energyFragment,
+            statusAmount = 1,
+            timer = 0.2
+        });
+
+        actions.Add(
+        new ASynergize
+        {
+            count = upgrade == Upgrade.None ? 1 : 2
+        });
 
         return actions;
     }

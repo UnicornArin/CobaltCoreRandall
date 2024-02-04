@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class Archive : Card
+internal sealed class Archive : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -41,6 +41,7 @@ internal sealed class Archive : Card
         actions.Add(
         new AStatus
         {
+            dialogueSelector = ".RandallModSynergyAccelerator",
             targetPlayer = true,
             status = ModInit.Instance.ArchiveStatus.Status,
             statusAmount = 1
@@ -54,5 +55,44 @@ internal sealed class Archive : Card
 
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModSynergyAccelerator" },
+            oncePerCombatTags = new() { "RandallModSynergyAcceleratorTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "This will get us more options every two turns.",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.riggs.Key(),
+                            Text = "Cool!",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.dizzy.Key(),
+                            Text = "Ah, that's interesting.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

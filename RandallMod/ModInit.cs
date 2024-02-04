@@ -19,6 +19,7 @@ namespace RandallMod
 
         internal Harmony Harmony { get; }
         internal IKokoroApi KokoroApi { get; }
+        internal IMoreDifficultiesApi MoreDifficultiesApi { get; }
         internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
         internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
 
@@ -35,6 +36,7 @@ namespace RandallMod
         internal IStatusEntry HalfCardStatus { get; }
         internal IStatusEntry ArchiveStatus { get; }
         internal IStatusEntry DummyHalvesStatus { get; }
+        internal IShipEntry RandallShip { get; }
 
         //Initialize TraitSprites
         internal ISpriteEntry SynergyChargeSprite { get; private set; } = null!;
@@ -42,6 +44,7 @@ namespace RandallMod
 
         //Initialize Deck
         internal IDeckEntry RandallDeck { get; }
+        internal IDeckEntry RandallShipDeck { get; }
 
         //Initialize Common Artifacts
         internal static IReadOnlyList<Type> CommonArtifacts { get; } = [
@@ -91,6 +94,15 @@ namespace RandallMod
             typeof(CoPilot),
             typeof(AuxiliaryShields)
         };
+
+        internal static readonly Type[] ShipCards = new Type[]
+        {
+            typeof(DisposableShield),
+            typeof(DisposableCannon),
+            typeof(DisposableWinglets),
+            typeof(DisposableShredder),
+        };
+
         internal static IEnumerable<Type> AllCards
             => StarterCards.Concat(CommonCards).Concat(UncommonCards).Concat(RareCards)/*.Append(typeof(RandallExeCard))*/;
         internal static IEnumerable<Type> AllArtifacts
@@ -103,6 +115,8 @@ namespace RandallMod
             //This is the Kokoro API registry
             KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!;
             KokoroApi.RegisterStatusRenderHook(this, 0);
+            //Alt Deck check
+            MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties")!;
 
             //i18n setup (This has to go on top for reasons
             this.AnyLocalizations = new JsonLocalizationProvider(
@@ -243,6 +257,14 @@ namespace RandallMod
                 StarterCardTypes = StarterCards,
             });
 
+            MoreDifficultiesApi?.RegisterAltStarters(RandallDeck.Deck, new StarterDeck
+            {
+                cards = {
+                new Teamwork(),
+                new ShieldV1_5()
+            }
+            });
+
             //Define Statuses
             ChargeUpStatus = helper.Content.Statuses.RegisterStatus("ChargeUp", new()
             {
@@ -367,6 +389,107 @@ namespace RandallMod
                 Description = this.AnyLocalizations.Bind(["status", "DummyHalvesStatus", "description"]).Localize
 
             });
+
+            //Register Ship
+            RandallShipDeck = helper.Content.Decks.RegisterDeck("RandallShip", new()
+            {
+                Definition = new() { color = DB.decks[Deck.dracula].color, titleColor = DB.decks[Deck.dracula].titleColor },
+                DefaultCardArt = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/border_ship.png")).Sprite,
+                BorderSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/art_blank.png")).Sprite,
+                Name = this.AnyLocalizations.Bind(["ship", "name"]).Localize
+            });
+
+            var shipWingLeft = helper.Content.Ships.RegisterPart("RandallShip.WingLeft", new()
+            {
+                Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipLeft.png")).Sprite
+            });
+            var shipWingRight = helper.Content.Ships.RegisterPart("RandallShip.WingRight", new()
+            {
+                Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipRight.png")).Sprite
+            });
+            var shipCockpit = helper.Content.Ships.RegisterPart("RandallShip.Cockpit", new()
+            {
+                Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipCockpit.png")).Sprite
+            });
+            var shipCannon = helper.Content.Ships.RegisterPart("RandallShip.Cannon", new()
+            {
+                Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipCannon.png")).Sprite
+            });
+            var shipBay = helper.Content.Ships.RegisterPart("RandallShip.Bay", new()
+            {
+                Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipBay.png")).Sprite
+            });
+
+            RandallShip = helper.Content.Ships.RegisterShip("RandallShip", new()
+            {
+                Ship = new()
+                {
+                    ship = new Ship
+                    {
+                        hull = 18,
+                        hullMax = 18,
+                        shieldMaxBase = 4,
+                        parts =
+                    {
+                        new Part
+                        {
+                            type = PType.wing,
+                            skin = shipWingLeft.UniqueName,
+                        },
+                        new Part
+                        {
+                            type = PType.cockpit,
+                            skin = shipCockpit.UniqueName
+                        },
+                        new Part
+                        {
+                            type = PType.cannon,
+                            skin = shipCannon.UniqueName
+                        },
+                        new Part
+                        {
+                            type = PType.missiles,
+                            skin = shipBay.UniqueName
+                        },
+                        new Part
+                        {
+                            type = PType.cockpit,
+                            skin = shipCockpit.UniqueName
+                        },
+                        new Part
+                        {
+                            type = PType.wing,
+                            skin = shipWingRight.UniqueName,
+                        }
+                    }
+                    },
+                    artifacts =
+                {
+                    new ShieldPrep()
+                },
+                    cards =
+                {
+                    new DisposableCannon(),
+                    new DisposableCannon(),
+                    new DisposableShield(),
+                    new DisposableWinglets(),
+                    new DisposableShredder()
+                }
+                },
+                UnderChassisSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipChassis.png")).Sprite,
+                /*ExclusiveArtifactTypes = new HashSet<Type>()
+            {
+                typeof(BatmobileArtifact),
+            },*/
+                Name = this.AnyLocalizations.Bind(["ship", "name"]).Localize,
+                Description = this.AnyLocalizations.Bind(["ship", "description"]).Localize,
+            });
+
+            //Shipcards
+            DisposableShield.Register(package, helper);
+            DisposableCannon.Register(package, helper);
+            DisposableWinglets.Register(package, helper);
+            DisposableShredder.Register(package, helper);
 
             //Reminder, Shockah hates it, need to fix
             //But it works, we take those

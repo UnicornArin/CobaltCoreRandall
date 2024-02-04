@@ -8,17 +8,15 @@ internal static class Dialogue
 
     internal static void Inject()
     {
-        //CustomSay.RegisteredDynamicLoopTags[CurrentSmugLoopTag] = CurrentSmugLoopTagFunction;
-
         EventDialogue.Inject();
-        //ArtifactDialogue.Inject();
+        ArtifactDialogue.Inject();
         CombatDialogue.Inject();
-        /*
+
         foreach (var cardType in ModInit.AllCards)
         {
             if (Activator.CreateInstance(cardType) is not IRegisterableCard card)
                 continue;
             card.InjectDialogue();
-        }*/
+        }
     }
 }

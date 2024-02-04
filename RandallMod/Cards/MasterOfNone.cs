@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class MasterOfNone : Card
+internal sealed class MasterOfNone : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -42,7 +42,8 @@ internal sealed class MasterOfNone : Card
             damage = GetDmg(s, 3),
             status = ModInit.Instance.HalfDamageStatus.Status,
             statusAmount = 1,
-            timer = 0.2
+            timer = 0.2,
+            dialogueSelector = ".RandallModMasterOfNone"
         });
         actions.Add(
         new AStatus
@@ -65,6 +66,7 @@ internal sealed class MasterOfNone : Card
             actions.Add(
             new AStatus
             {
+                dialogueSelector = ".RandallModMasterOfNoneA",
                 targetPlayer = true,
                 status = ModInit.Instance.HalfTempShieldStatus.Status,
                 statusAmount = 1,
@@ -83,6 +85,7 @@ internal sealed class MasterOfNone : Card
             actions.Add(
             new AStatus
             {
+                dialogueSelector = ".RandallModMasterOfNoneB",
                 targetPlayer = true,
                 status = Status.shard,
                 statusAmount = 1
@@ -97,5 +100,105 @@ internal sealed class MasterOfNone : Card
         }
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { "comp" },
+            lookup = new() { "RandallModMasterOfNone" },
+            oncePerCombatTags = new() { "RandallModMasterOfNoneTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = "comp",
+                    Text = "Heeey, wait a minute...",
+                    loopTag = "squint"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = ModInit.Instance.RandallDeck.Deck.Key(),
+                            Text = "You're not the only generalist here, CAT.",
+                            loopTag = "explain"
+                        }
+                    }
+                }
+            }
+        };
+        DB.story.all[$"{Key()}_1"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModMasterOfNone" },
+            oncePerCombatTags = new() { "RandallModMasterOfNoneTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "It's a bit of everything for everyone.",
+                    loopTag = "explain"
+                }
+            }
+        };
+        DB.story.all[$"{Key()}_2"] = new()
+        {
+            type = NodeType.combat,
+            lookup = new() { "RandallModMasterOfNoneA" },
+            oncePerCombatTags = new() { "RandallModMasterOfNoneATag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.goat.Key(),
+                            Text = "There's something for me here.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+        };
+        DB.story.all[$"{Key()}_3"] = new()
+        {
+            type = NodeType.combat,
+            lookup = new() { "RandallModMasterOfNoneB" },
+            oncePerCombatTags = new() { "RandallModMasterOfNoneBTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.shard.Key(),
+                            Text = "Look! A shard!",
+                            loopTag = "stoked"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.eunice.Key(),
+                            Text = "Oh you shouldn't have.",
+                            loopTag = "sly"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

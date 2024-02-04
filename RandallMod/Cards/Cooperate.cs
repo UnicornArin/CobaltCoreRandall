@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class Cooperate : Card
+internal sealed class Cooperate : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -39,7 +39,48 @@ internal sealed class Cooperate : Card
     {
         List<CardAction> actions = [];
 
-        actions.Add(new ACheapSynergy { });
+        actions.Add(new ACheapSynergy {
+            dialogueSelector = ".RandallModCooperate"
+        });
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModCooperate" },
+            oncePerCombatTags = new() { "RandallModCooperateTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "Let's play a lot of cheap cards.",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.shard.Key(),
+                            Text = "Major arcanas?",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = "comp",
+                            Text = "This feels oddly familiar.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

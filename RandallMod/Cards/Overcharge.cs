@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class Overcharge : Card
+internal sealed class Overcharge : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -50,10 +50,50 @@ internal sealed class Overcharge : Card
             actions.Add(
             new ASynergize
             {
-                count = upgrade == Upgrade.A ? 3 : 99
+                count = upgrade == Upgrade.A ? 3 : 99,
+                dialogueSelector = ".RandallModOverchargeB"
             });
         }
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModOverchargeB" },
+            oncePerCombatTags = new() { "RandallModOverchargeBTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "That should improve the entire deck.",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.riggs.Key(),
+                            Text = "What's a deck?",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.hacker.Key(),
+                            Text = "I see this little icon appear all over the place, is this a virus?",
+                            loopTag = "mad"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

@@ -8,7 +8,7 @@ using Nickel;
 
 namespace RandallMod.Artifacts
 {
-    internal class DivertedCharge : Artifact
+    internal class DivertedCharge : Artifact, IRegisterableArtifact
     {
         public static void Register(IModHelper helper)
         {
@@ -48,6 +48,51 @@ namespace RandallMod.Artifacts
                     ); ;
                 }
             }
+        }
+        public override void OnCombatStart(State state, Combat combat)
+        {
+            base.OnCombatStart(state, combat);
+            Narrative.SpeakBecauseOfAction(MG.inst.g, combat, $".{Key()}Trigger");
+        }
+
+        public void InjectDialogue()
+        {
+            DB.story.all[$"Artifact{Key()}"] = new()
+            {
+                type = NodeType.combat,
+                oncePerRun = true,
+                lookup = new() { $"{Key()}Trigger" },
+                oncePerRunTags = new() { $"{Key()}Tag" },
+                allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+                hasArtifacts = new() { Key() },
+                lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "We'll need some careful planning to make this work.",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.riggs.Key(),
+                            Text = "I'll leave the planning part to you.",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.goat.Key(),
+                            Text = "Planning, sure thing.",
+                            loopTag = "writing"
+                        }
+                    }
+                }
+            }
+            };
         }
     }
 }

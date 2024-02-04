@@ -6,6 +6,10 @@
             "A playtester, his cards dabble in all basic aspects of the game."
         ]
     },
+    "ship": {
+        "name": "Rigel",
+        "description": "A large laboratory ship. It has the means to remove its own unnecessary components."
+    },
     "card": {
         "SynergyEvade": { "name": "Synergy Evade" },
         "SynergyShield": { "name": "Synergy Shield" },
@@ -36,7 +40,15 @@
         "EnhancedMagnify": { "name": "Enhanced Magnify" },
         "CoPilot": { "name": "Co-Pilot" },
         "AuxiliaryShields": { "name": "Auxiliary Shields" },
-        "Archive": { "name": "Synergy Accelerator" }
+        "Archive": { "name": "Synergy Amplifier" },
+
+        "DisposableShield": { "name": "Disposable Shield" },
+        "DisposableWinglets": { "name": "Disposable Winglets" },
+        "DisposableCannon": { "name": "Disposable Cannon" },
+        "DisposableShredder": {
+            "name": "Disposable Shredder",
+            "description": "Select a card in hand, shred it."
+        }
     },
     "status": {
         "ChargeUp": {
@@ -65,11 +77,11 @@
         },
         "CoPilotStatus": {
             "name": "Co-Pilot",
-            "description": "On turn start, gain {0} <c=status>HALF EVADE</c>, also <c=status>gain ONE ENERGY FRAGMENT</c>."
+            "description": "On turn start, gain {0} <c=status>HALF EVADE</c>, also gain an <c=status>ENERGY FRAGMENT</c>."
         },
         "AuxiliaryShieldsStatus": {
             "name": "Auxiliary Shields",
-            "description": "On turn start, gain {0} <c=status>HALF SHIELD</c>, also <c=status>gain ONE ENERGY FRAGMENT</c>."
+            "description": "On turn start, gain {0} <c=status>HALF SHIELD</c>, also gain an <c=status>ENERGY FRAGMENT</c>."
         },
         "OverchargeStatus": {
             "name": "Overcharge",
@@ -102,7 +114,7 @@
         },
         "TeapotArtifact": {
             "name": "TEAPOT",
-            "description": "On turn start: A card in deck, discard or hand becomes Synergized."
+            "description": "On turn start: A card in draw pile, discard or hand becomes Synergized."
         },
         "DivertedChargeArtifact": {
             "name": "DIVERTED CHARGE",
@@ -124,7 +136,7 @@
     "action": {
         "ASynergize": {
             "name": "Synergize",
-            "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in deck, then discard, then hand."
+            "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in draw pile, then discard, then hand."
         }
     },
     "trait": {

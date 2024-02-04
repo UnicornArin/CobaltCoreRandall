@@ -8,7 +8,7 @@ using Nickel;
 
 namespace RandallMod.Artifacts
 {
-    internal class PatchingProgram : Artifact
+    internal class PatchingProgram : Artifact, IRegisterableArtifact
     {
         public static void Register(IModHelper helper)
         {
@@ -29,6 +29,58 @@ namespace RandallMod.Artifacts
         public override void OnReceiveArtifact(State state)
         {
             state.GetCurrentQueue().QueueImmediate(new AUpgradeCardSelect());
+        }
+
+        public override void OnCombatStart(State state, Combat combat)
+        {
+            base.OnCombatStart(state, combat);
+            Narrative.SpeakBecauseOfAction(MG.inst.g, combat, $".{Key()}Trigger");
+        }
+
+        public void InjectDialogue()
+        {
+            DB.story.all[$"Artifact{Key()}"] = new()
+            {
+                type = NodeType.combat,
+                oncePerRun = true,
+                lookup = new() { $"{Key()}Trigger" },
+                oncePerRunTags = new() { $"{Key()}Tag" },
+                allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+                hasArtifacts = new() { Key() },
+                lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "A small upgrade can work wonders.",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.hacker.Key(),
+                            Text = "Cool program! Retro storage device too!",
+                            loopTag = "intense"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.goat.Key(),
+                            Text = "Wow, never seen one of those in person.",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = "comp",
+                            Text = "Wait, how'd you plug that thing in?.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+            };
         }
     }
 }

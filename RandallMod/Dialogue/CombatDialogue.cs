@@ -1037,6 +1037,8 @@ internal static class CombatDialogue
         {
             type = NodeType.combat,
             allPresent = new() { randall },
+            oncePerCombat = true,
+            oncePerCombatTags = new() { $"TookZeroDamageAtLowHealth_{randall}_1_Tag" },
             enemyShotJustHit = true,
             maxDamageDealtToPlayerThisTurn = 0,
             maxHull = 2,

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class InParts : Card
+internal sealed class InParts : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -40,6 +40,7 @@ internal sealed class InParts : Card
         actions.Add(
         new AStatus
         {
+            dialogueSelector = ".RandallModAssemblyRequired",
             targetPlayer = true,
             status = ModInit.Instance.HalfEvadeStatus.Status,
             statusAmount = 1,
@@ -85,5 +86,45 @@ internal sealed class InParts : Card
         }
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        //DB.story.all[$"{Key()}_0"] = new()
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModAssemblyRequired" },
+            oncePerCombatTags = new() { "RandallModAssemblyRequiredTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "They might not be much, but they add up!",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.goat.Key(),
+                            Text = "Could I borrow some of those for my drones?",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.hacker.Key(),
+                            Text = "It's the sum of the parts that matter.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

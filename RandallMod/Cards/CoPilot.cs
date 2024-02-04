@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class CoPilot : Card
+internal sealed class CoPilot : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -41,6 +41,7 @@ internal sealed class CoPilot : Card
         actions.Add(
         new AStatus
         {
+            dialogueSelector = ".RandallModCopilot",
             targetPlayer = true,
             status = ModInit.Instance.CoPilotStatus.Status,
             statusAmount = 1
@@ -58,5 +59,44 @@ internal sealed class CoPilot : Card
         }
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModCopilot" },
+            oncePerCombatTags = new() { "RandallModCopilotTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "This should get us some movement and energy.",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.riggs.Key(),
+                            Text = "Do I get to sit back and relax then?",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.eunice.Key(),
+                            Text = "Why do you do everything in halves?",
+                            loopTag = "squint"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

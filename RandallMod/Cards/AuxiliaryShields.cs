@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class AuxiliaryShields : Card
+internal sealed class AuxiliaryShields : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -41,6 +41,7 @@ internal sealed class AuxiliaryShields : Card
         actions.Add(
         new AStatus
         {
+            dialogueSelector = ".RandallModAuxShields",
             targetPlayer = true,
             status = ModInit.Instance.AuxiliaryShieldsStatus.Status,
             statusAmount = 1
@@ -56,5 +57,44 @@ internal sealed class AuxiliaryShields : Card
 
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModAuxShields" },
+            oncePerCombatTags = new() { "RandallModAuxShieldsTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "How's some shield and energy fragments?",
+                    loopTag = "neutral"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.dizzy.Key(),
+                            Text = "I'll gladly take more shields.",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.peri.Key(),
+                            Text = "Every little thing helps.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

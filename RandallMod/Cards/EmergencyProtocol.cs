@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RandallMod;
 
-internal sealed class EmergencyProtocol : Card
+internal sealed class EmergencyProtocol : Card, IRegisterableCard
 {
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
@@ -41,6 +41,7 @@ internal sealed class EmergencyProtocol : Card
         actions.Add(
         new AStatus
         {
+            dialogueSelector = ".RandallModEmergencyProtocol",
             targetPlayer = true,
             status = Status.perfectShield,
             statusAmount = 1
@@ -50,7 +51,7 @@ internal sealed class EmergencyProtocol : Card
         {
             targetPlayer = true,
             status = Status.energyLessNextTurn,
-            statusAmount = upgrade == Upgrade.A ? 2 : 1
+            statusAmount = upgrade != Upgrade.A ? 2 : 1
         });
         actions.Add(
         new AStatus
@@ -61,5 +62,44 @@ internal sealed class EmergencyProtocol : Card
         });
 
         return actions;
+    }
+
+    public void InjectDialogue()
+    {
+        DB.story.all[$"{Key()}_0"] = new()
+        {
+            type = NodeType.combat,
+            allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+            lookup = new() { "RandallModEmergencyProtocol" },
+            oncePerCombatTags = new() { "RandallModEmergencyProtocolTag" },
+            oncePerRun = true,
+            lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "Next turn is going to be rough.",
+                    loopTag = "squint"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.shard.Key(),
+                            Text = "We'll pull through! Just watch.",
+                            loopTag = "plan"
+                        },
+                        new CustomSay()
+                        {
+                            who = "comp",
+                            Text = "I don't like this.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+        };
     }
 }

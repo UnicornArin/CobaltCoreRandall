@@ -8,7 +8,7 @@ using Nickel;
 
 namespace RandallMod.Artifacts
 {
-    internal class RepurposedParts : Artifact
+    internal class RepurposedParts : Artifact, IRegisterableArtifact
     {
         public static void Register(IModHelper helper)
         {
@@ -69,6 +69,77 @@ namespace RandallMod.Artifacts
                     count = 1
                 }
                 ]);
+        }
+
+        public override void OnCombatStart(State state, Combat combat)
+        {
+            base.OnCombatStart(state, combat);
+            Narrative.SpeakBecauseOfAction(MG.inst.g, combat, $".{Key()}Trigger");
+        }
+
+        public void InjectDialogue()
+        {
+            DB.story.all[$"Artifact{Key()}_0"] = new()
+            {
+                type = NodeType.combat,
+                oncePerRun = true,
+                lookup = new() { $"{Key()}Trigger" },
+                oncePerRunTags = new() { $"{Key()}Tag" },
+                allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+                hasArtifacts = new() { Key() },
+                lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "Who ate half of my cookie?.",
+                    loopTag = "squint"
+                },
+                new CustomSay()
+                {
+                    who = Deck.shard.Key(),
+                    Text = "It magically disappeared!",
+                    loopTag = "neutral"
+                }
+            }
+            };
+
+            DB.story.all[$"Artifact{Key()}_1"] = new()
+            {
+                type = NodeType.combat,
+                oncePerRun = true,
+                lookup = new() { $"{Key()}Trigger" },
+                oncePerRunTags = new() { $"{Key()}Tag" },
+                allPresent = new() { ModInit.Instance.RandallDeck.Deck.Key() },
+                hasArtifacts = new() { Key() },
+                lines = new()
+            {
+                new CustomSay()
+                {
+                    who = ModInit.Instance.RandallDeck.Deck.Key(),
+                    Text = "We can trade some of these fragments for cards.",
+                    loopTag = "explain"
+                },
+                new SaySwitch()
+                {
+                    lines = new()
+                    {
+                        new CustomSay()
+                        {
+                            who = Deck.riggs.Key(),
+                            Text = "Cool!",
+                            loopTag = "neutral"
+                        },
+                        new CustomSay()
+                        {
+                            who = Deck.peri.Key(),
+                            Text = "Sounds like extra options? I could use that.",
+                            loopTag = "neutral"
+                        }
+                    }
+                }
+            }
+            };
         }
     }
 }
