@@ -7,6 +7,7 @@ namespace RandallMod;
 
 internal sealed class ParticleBeam : Card
 {
+
     //Register
     public static void Register(IPluginPackage<IModManifest> package, IModHelper helper)
     {
@@ -55,22 +56,45 @@ internal sealed class ParticleBeam : Card
             timer = 0.2
         });
 
+        actions.Add(new AVariableHintFake
+        {
+            //displayAmount = GetX(s, c),
+        });
+
         actions.Add(new AVariableHint
         {
-            status = ModInit.Instance.DummyHalvesStatus.Status
+            status = Status.heat
         });
 
         actions.Add(new AAttack
         {
-            damage = GetDmg(s, s.ship.Get(ModInit.Instance.HalfDamageStatus.Status) +
+            damage = GetDmg(s, GetX(s, c)),
+            xHint = 1,
+        });
+        return actions;
+    }
+
+    public int GetX(State s, Combat c) {
+        int x = 0;
+        if (upgrade != Upgrade.A)
+        {
+            x = (((s.ship.Get(ModInit.Instance.HalfDamageStatus.Status) + 1 + s.ship.Get(Status.boost)) % 2) +
                 s.ship.Get(ModInit.Instance.HalfCardStatus.Status) +
                 s.ship.Get(ModInit.Instance.HalfEvadeStatus.Status) +
                 s.ship.Get(ModInit.Instance.HalfShieldStatus.Status) +
                 s.ship.Get(ModInit.Instance.HalfTempShieldStatus.Status) +
                 s.ship.Get(ModInit.Instance.ChargeUpStatus.Status) +
-                s.ship.Get(Status.energyFragment)),
-            xHint = 1,
-        });
-        return actions;
+                ((s.ship.Get(Status.energyFragment) % 3)));
+        }
+        else {
+            x = (((s.ship.Get(ModInit.Instance.HalfDamageStatus.Status) + 1 % 2) +
+                s.ship.Get(ModInit.Instance.HalfCardStatus.Status) +
+                s.ship.Get(ModInit.Instance.HalfEvadeStatus.Status) +
+                s.ship.Get(ModInit.Instance.HalfShieldStatus.Status) +
+                s.ship.Get(ModInit.Instance.HalfTempShieldStatus.Status) +
+                s.ship.Get(ModInit.Instance.ChargeUpStatus.Status) +
+                ((s.ship.Get(Status.energyFragment) + (upgrade == Upgrade.A ? 1 : 0) + s.ship.Get(Status.boost)) % 3)));
+        }
+        return x;
     }
 }

@@ -22,6 +22,7 @@ namespace RandallMod
         internal IMoreDifficultiesApi MoreDifficultiesApi { get; }
         internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
         internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
+        internal ISpriteEntry PartialStatusIcon { get; }
 
 
         //Initialize Statuses
@@ -377,6 +378,10 @@ namespace RandallMod
                 Description = this.AnyLocalizations.Bind(["status", "OverchargeStatus", "description"]).Localize
 
             });
+            
+        
+            PartialStatusIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconDummyHalves.png"));
+            /*
             DummyHalvesStatus = helper.Content.Statuses.RegisterStatus("DummyHalvesStatus", new()
             {
                 Definition = new()
@@ -388,7 +393,7 @@ namespace RandallMod
                 Name = this.AnyLocalizations.Bind(["status", "DummyHalvesStatus", "name"]).Localize,
                 Description = this.AnyLocalizations.Bind(["status", "DummyHalvesStatus", "description"]).Localize
 
-            });
+            });*/
 
             //Register Ship
             RandallShipDeck = helper.Content.Decks.RegisterDeck("RandallShip", new()

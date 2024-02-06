@@ -137,6 +137,9 @@
         "ASynergize": {
             "name": "Synergize",
             "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in draw pile, then discard, then hand."
+        },
+        "AVariableHintFake": {
+            "description": "Your Partial Statuses ({{Amount}})"
         }
     },
     "trait": {
