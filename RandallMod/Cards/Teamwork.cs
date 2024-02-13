@@ -39,7 +39,7 @@ internal sealed class Teamwork : Card
         actions.Add(
         new ASynergize
         {
-            count = upgrade != Upgrade.A ? 2 : 4
+            count = upgrade != Upgrade.A ? 3 : 5
         });
 
         actions.Add(

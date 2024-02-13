@@ -1098,7 +1098,7 @@ internal static class CombatDialogue
                 new CustomSay()
                 {
                     who = randall,
-                    Text = "We don't have a good reason to miss, huh.",
+                    Text = "Do we have a good reason to miss?",
                     loopTag = "misplay"
                 },
             }

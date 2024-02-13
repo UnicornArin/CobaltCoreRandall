@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RandallMod
 {
-    public class OnTurnBeingHandler
+    public class OnTurnBeginHandler
     {
         public static void HarmonyPostfix_Ship_OnBeginTurn(Ship __instance, State s, Combat c)
         {

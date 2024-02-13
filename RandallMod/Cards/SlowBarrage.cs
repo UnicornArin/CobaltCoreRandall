@@ -40,7 +40,7 @@ internal sealed class SlowBarrage : Card
         actions.Add(
         new AAttack
         {
-            damage = GetDmg(s, 1),
+            damage = GetDmg(s, upgrade != Upgrade.B ? 0 : 1),
             status = ModInit.Instance.HalfDamageStatus.Status,
             statusAmount = 1
         });

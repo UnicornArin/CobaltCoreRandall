@@ -39,7 +39,7 @@ internal sealed class SynergyStrike : Card
         actions.Add(
         new AAttack
         {
-            damage = GetDmg(s, upgrade != Upgrade.A ? 4 : 5),
+            damage = GetDmg(s, upgrade != Upgrade.A ? 3 : 4),
             status = ModInit.Instance.HalfDamageStatus.Status,
             statusAmount = 1
         });
@@ -47,7 +47,7 @@ internal sealed class SynergyStrike : Card
         actions.Add(
         new ASynergize
         {
-            count = 5
+            count = 4
         });
 
         if (upgrade == Upgrade.B)
@@ -57,7 +57,7 @@ internal sealed class SynergyStrike : Card
             {
                 targetPlayer = true,
                 status = Status.energyFragment,
-                statusAmount = 2,
+                statusAmount = 1,
                 timer = 0.2
             });
         }

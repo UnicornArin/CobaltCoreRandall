@@ -30,7 +30,7 @@ internal sealed class EmergencyProtocol : Card, IRegisterableCard
         {
             cost = 2,
             exhaust = true,
-            retain = upgrade == Upgrade.B
+            retain = true
         };
 
     //Actions
@@ -46,20 +46,25 @@ internal sealed class EmergencyProtocol : Card, IRegisterableCard
             status = Status.perfectShield,
             statusAmount = 1
         });
-        actions.Add(
-        new AStatus
+        if (upgrade != Upgrade.A)
         {
-            targetPlayer = true,
-            status = Status.energyLessNextTurn,
-            statusAmount = upgrade != Upgrade.A ? 2 : 1
-        });
-        actions.Add(
-        new AStatus
-        {
-            targetPlayer = true,
-            status = Status.drawLessNextTurn,
-            statusAmount = 2
-        });
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = Status.energyLessNextTurn,
+                statusAmount = 2
+            });
+        }
+        if (upgrade != Upgrade.B) {
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = Status.drawLessNextTurn,
+                statusAmount = 2
+            });
+        }
 
         return actions;
     }

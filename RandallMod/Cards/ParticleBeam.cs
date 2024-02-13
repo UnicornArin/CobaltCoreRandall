@@ -61,11 +61,6 @@ internal sealed class ParticleBeam : Card
             //displayAmount = GetX(s, c),
         });
 
-        actions.Add(new AVariableHint
-        {
-            status = Status.heat
-        });
-
         actions.Add(new AAttack
         {
             damage = GetDmg(s, GetX(s, c)),
@@ -87,13 +82,13 @@ internal sealed class ParticleBeam : Card
                 ((s.ship.Get(Status.energyFragment) % 3)));
         }
         else {
-            x = (((s.ship.Get(ModInit.Instance.HalfDamageStatus.Status) + 1 % 2) +
+            x = ((((s.ship.Get(ModInit.Instance.HalfDamageStatus.Status) + 1) % 2) +
                 s.ship.Get(ModInit.Instance.HalfCardStatus.Status) +
                 s.ship.Get(ModInit.Instance.HalfEvadeStatus.Status) +
                 s.ship.Get(ModInit.Instance.HalfShieldStatus.Status) +
                 s.ship.Get(ModInit.Instance.HalfTempShieldStatus.Status) +
                 s.ship.Get(ModInit.Instance.ChargeUpStatus.Status) +
-                ((s.ship.Get(Status.energyFragment) + (upgrade == Upgrade.A ? 1 : 0) + s.ship.Get(Status.boost)) % 3)));
+                ((s.ship.Get(Status.energyFragment) + 1 + s.ship.Get(Status.boost)) % 3)));
         }
         return x;
     }

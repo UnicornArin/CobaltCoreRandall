@@ -431,8 +431,8 @@ namespace RandallMod
                 {
                     ship = new Ship
                     {
-                        hull = 18,
-                        hullMax = 18,
+                        hull = 26,
+                        hullMax = 26,
                         shieldMaxBase = 4,
                         parts =
                     {
@@ -546,7 +546,7 @@ namespace RandallMod
             harmony.Patch(
                 //Artifact Patch for Artifact
                 original: AccessTools.DeclaredMethod(typeof(Ship), nameof(Ship.OnBeginTurn)),
-                postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(OnTurnBeingHandler), nameof(OnTurnBeingHandler.HarmonyPostfix_Ship_OnBeginTurn)))
+                postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(OnTurnBeginHandler), nameof(OnTurnBeginHandler.HarmonyPostfix_Ship_OnBeginTurn)))
             );
 
             harmony.Patch(

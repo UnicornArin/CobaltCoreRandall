@@ -53,8 +53,8 @@ internal sealed class CoPilot : Card, IRegisterableCard
             new AStatus
             {
                 targetPlayer = true,
-                status = Status.evade,
-                statusAmount = 2
+                status = ModInit.Instance.HalfEvadeStatus.Status,
+                statusAmount = 1
             });
         }
 

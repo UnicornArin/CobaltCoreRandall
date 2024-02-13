@@ -47,14 +47,16 @@ internal sealed class AuxiliaryShields : Card, IRegisterableCard
             statusAmount = 1
         });
 
-        actions.Add(
-        new AStatus
+        if (upgrade != Upgrade.A)
         {
-            targetPlayer = true,
-            status = Status.shield,
-            statusAmount = upgrade != Upgrade.A ? 2 : 1
-        });
-
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = Status.shield,
+                statusAmount = 1
+            });
+        }
 
         return actions;
     }
