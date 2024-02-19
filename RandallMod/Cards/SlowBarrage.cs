@@ -40,22 +40,12 @@ internal sealed class SlowBarrage : Card
         actions.Add(
         new AAttack
         {
-            damage = GetDmg(s, upgrade != Upgrade.B ? 0 : 1),
+            damage = GetDmg(s, 1),
             status = ModInit.Instance.HalfDamageStatus.Status,
             statusAmount = 1
         });
 
-        if (upgrade != Upgrade.B)
-        {
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = true,
-                status = ModInit.Instance.HalfEvadeStatus.Status,
-                statusAmount = 1,
-                timer = 0.2
-            });
-        } else
+        if (upgrade == Upgrade.B)
         {
             actions.Add(
             new AStatus
@@ -64,12 +54,21 @@ internal sealed class SlowBarrage : Card
                 status = Status.evade,
                 statusAmount = 1
             });
+        } else
+        {
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = ModInit.Instance.HalfEvadeStatus.Status,
+                statusAmount = 1
+            });
         }
 
         actions.Add(
         new ASynergize
         {
-            count = upgrade == Upgrade.A ? 2 : 1
+            count = upgrade == Upgrade.A ? 4 : 2
         });
 
         return actions;

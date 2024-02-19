@@ -29,7 +29,7 @@
         "SynergyStrike": { "name": "Synergy Strike" },
         "Cooperate": {
             "name": "Cooperate",
-            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synzergized</c> cards."
+            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synzergized</c> cards in hand."
         },
         "CompleteSet": {
             "name": "Complete Set",

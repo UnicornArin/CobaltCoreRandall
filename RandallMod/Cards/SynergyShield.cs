@@ -47,7 +47,7 @@ internal sealed class SynergyShield : Card
         actions.Add(
         new ASynergize
         {
-            count = upgrade != Upgrade.B ? 2 : 4
+            count = upgrade != Upgrade.B ? 2 : 6
         });
 
         actions.Add(

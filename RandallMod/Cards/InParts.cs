@@ -37,6 +37,18 @@ internal sealed class InParts : Card, IRegisterableCard
     {
         List<CardAction> actions = [];
 
+        if (upgrade != Upgrade.None)
+        {
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = Status.energyFragment,
+                statusAmount = upgrade == Upgrade.A ? 1 : 2,
+                timer = 0.2
+            });
+        }
+
         actions.Add(
         new AStatus
         {
@@ -65,23 +77,23 @@ internal sealed class InParts : Card, IRegisterableCard
             timer = 0.2
         });
 
-        if (upgrade == Upgrade.A)
-        {
-            actions.Add(
-            new ASynergize
-            {
-                count = 1
-            });
-        }
         if (upgrade == Upgrade.B)
         {
             actions.Add(
             new AStatus
             {
                 targetPlayer = true,
-                status = Status.energyFragment,
-                statusAmount = 1,
-                timer = 0.2
+                status = ModInit.Instance.HalfDamageStatus.Status,
+                statusAmount = 1
+            });
+        }
+
+        if (upgrade == Upgrade.A)
+        {
+            actions.Add(
+            new ASynergize
+            {
+                count = 2
             });
         }
 

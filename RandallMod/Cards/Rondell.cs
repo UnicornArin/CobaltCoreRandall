@@ -42,7 +42,7 @@ internal sealed class Rondell : Card
         {
             targetPlayer = true,
             status = Status.tempShield,
-            statusAmount = upgrade != Upgrade.B ? 1 : 2
+            statusAmount = upgrade != Upgrade.B ? 2 : 3
         });
 
         if (upgrade == Upgrade.B)
@@ -57,19 +57,11 @@ internal sealed class Rondell : Card
             });
         }
 
-        actions.Add(
-        new AStatus
-        {
-            targetPlayer = true,
-            status = Status.energyFragment,
-            statusAmount = 1,
-            timer = 0.2
-        });
 
         actions.Add(
         new ASynergize
         {
-            count = upgrade == Upgrade.None ? 1 : 2
+            count = upgrade != Upgrade.None ? 3 : 6
         });
 
         return actions;

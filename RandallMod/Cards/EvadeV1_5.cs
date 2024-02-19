@@ -70,7 +70,7 @@ internal sealed class EvadeV1_5 : Card
             actions.Add(
             new ASynergize
             {
-                count = 2
+                count = 6
             });
         }
 

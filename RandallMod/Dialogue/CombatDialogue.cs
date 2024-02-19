@@ -265,7 +265,7 @@ internal static class CombatDialogue
                 new CustomSay()
                 {
                     who = randall,
-                    Text = "Any damage is good damage",
+                    Text = "Any damage is good damage.",
                     loopTag = "neutral"
                 },
                 new SaySwitch()

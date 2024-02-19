@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using Nanoray.PluginManager;
 using Nickel;
 using RandallMod.Artifacts;
+using Shockah.Soggins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -517,6 +518,24 @@ namespace RandallMod
             //Register additional sprites
             SynergyChargeSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconChargeUp2.png"));
             IconSynzergize = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconSynergize.png"));
+
+            /*
+            //BloodTap API
+            if (contactPoint.GetApi<ExternalAPIDracula>("Shockah.Dracula") is { } draculaApi)
+            {
+                draculaApi.RegisterBloodTapOptionProvider(ModInit.Instance.ArchiveStatus.Status.Id!.Value, (_, _, status) => [
+                    new AHurt { targetPlayer = true, hurtAmount = 1 },
+                    new AStatus { targetPlayer = true, status = status, statusAmount = 3 },
+                ]);
+                draculaApi.RegisterBloodTapOptionProvider((Status)ExtraApologiesStatus.Id!.Value, (_, _, status) => [
+                    new AHurt { targetPlayer = true, hurtAmount = 1 },
+                    new AStatus { targetPlayer = true, status = status, statusAmount = 1 },
+                ]);
+                draculaApi.RegisterBloodTapOptionProvider((Status)ConstantApologiesStatus.Id!.Value, (_, _, status) => [
+                    new AHurt { targetPlayer = true, hurtAmount = 2 },
+                    new AStatus { targetPlayer = true, status = status, statusAmount = 1 },
+                ]);
+            }*/
 
             //Dialogue patching
             Dialogue.Inject();

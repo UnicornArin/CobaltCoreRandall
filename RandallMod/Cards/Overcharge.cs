@@ -42,18 +42,17 @@ internal sealed class Overcharge : Card, IRegisterableCard
         {
             targetPlayer = true,
             status = ModInit.Instance.OverchargeStatus.Status,
-            statusAmount = 1
+            statusAmount = upgrade != Upgrade.A ? 1 : 2,
         });
 
-        if (upgrade != Upgrade.None)
+
+        actions.Add(
+        new ASynergize
         {
-            actions.Add(
-            new ASynergize
-            {
-                count = upgrade == Upgrade.A ? 3 : 99,
-                dialogueSelector = ".RandallModOverchargeB"
-            });
-        }
+            count = upgrade == Upgrade.None ? 4 : upgrade == Upgrade.A ? 5 : 99,
+            dialogueSelector = ".RandallModOverchargeB"
+        });
+
 
         return actions;
     }

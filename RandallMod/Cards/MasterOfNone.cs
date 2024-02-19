@@ -61,17 +61,9 @@ internal sealed class MasterOfNone : Card, IRegisterableCard
             statusAmount = 1,
             timer = 0.2
         });
+
         if (upgrade == Upgrade.A)
         {
-            actions.Add(
-            new AStatus
-            {
-                dialogueSelector = ".RandallModMasterOfNoneA",
-                targetPlayer = true,
-                status = ModInit.Instance.HalfTempShieldStatus.Status,
-                statusAmount = 1,
-                timer = 0.2
-            });
             actions.Add(
             new AStatus
             {
@@ -79,9 +71,27 @@ internal sealed class MasterOfNone : Card, IRegisterableCard
                 status = Status.droneShift,
                 statusAmount = 1
             });
+
+            actions.Add(
+            new AStatus
+            {
+                dialogueSelector = ".RandallModMasterOfNoneA",
+                targetPlayer = true,
+                status = Status.heat,
+                statusAmount = -1
+            });
         }
+
         if (upgrade == Upgrade.B)
         {
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = Status.droneShift,
+                statusAmount = 1
+            });
+
             actions.Add(
             new AStatus
             {
@@ -89,13 +99,6 @@ internal sealed class MasterOfNone : Card, IRegisterableCard
                 targetPlayer = true,
                 status = Status.shard,
                 statusAmount = 1
-            });
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = true,
-                status = Status.heat,
-                statusAmount = -1
             });
         }
 
@@ -162,11 +165,11 @@ internal sealed class MasterOfNone : Card, IRegisterableCard
                 {
                     lines = new()
                     {
-                        new CustomSay()
+                       new CustomSay()
                         {
-                            who = Deck.goat.Key(),
-                            Text = "There's something for me here.",
-                            loopTag = "neutral"
+                            who = Deck.eunice.Key(),
+                            Text = "Oh you shouldn't have.",
+                            loopTag = "sly"
                         }
                     }
                 }
@@ -189,12 +192,6 @@ internal sealed class MasterOfNone : Card, IRegisterableCard
                             who = Deck.shard.Key(),
                             Text = "Look! A shard!",
                             loopTag = "stoked"
-                        },
-                        new CustomSay()
-                        {
-                            who = Deck.eunice.Key(),
-                            Text = "Oh you shouldn't have.",
-                            loopTag = "sly"
                         }
                     }
                 }

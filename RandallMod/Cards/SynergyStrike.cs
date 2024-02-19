@@ -57,6 +57,15 @@ internal sealed class SynergyStrike : Card
             {
                 targetPlayer = true,
                 status = Status.energyFragment,
+                statusAmount = 2,
+                timer = 0.2
+            });
+
+            actions.Add(
+            new AStatus
+            {
+                targetPlayer = true,
+                status = ModInit.Instance.HalfDamageStatus.Status,
                 statusAmount = 1,
                 timer = 0.2
             });

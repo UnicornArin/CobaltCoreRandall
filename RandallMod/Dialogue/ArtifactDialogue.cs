@@ -234,7 +234,7 @@ internal static class ArtifactDialogue
                 {
                     who = randall,
                     Text = "I have mixed feelings about an armored bay.",
-                    loopTag = "Thoughtful"
+                    loopTag = "thoughtful"
                 },
                 new SaySwitch()
                 {
