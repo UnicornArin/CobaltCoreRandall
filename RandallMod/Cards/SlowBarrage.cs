@@ -37,13 +37,23 @@ internal sealed class SlowBarrage : Card
     {
         List<CardAction> actions = [];
 
-        actions.Add(
-        new AAttack
+        if (upgrade == Upgrade.B)
         {
-            damage = GetDmg(s, 1),
-            status = ModInit.Instance.HalfDamageStatus.Status,
-            statusAmount = 1
-        });
+            actions.Add(
+            new AAttack
+            {
+                damage = GetDmg(s, 1),
+                status = ModInit.Instance.HalfDamageStatus.Status,
+                statusAmount = 1
+            });
+        } else
+        {
+            actions.Add(
+            new AAttack
+            {
+                damage = GetDmg(s, 1)
+            });
+        }
 
         if (upgrade == Upgrade.B)
         {
@@ -68,7 +78,7 @@ internal sealed class SlowBarrage : Card
         actions.Add(
         new ASynergize
         {
-            count = upgrade == Upgrade.A ? 4 : 2
+            count = upgrade == Upgrade.None ? 1 : upgrade == Upgrade.A ? 4 : 2
         });
 
         return actions;

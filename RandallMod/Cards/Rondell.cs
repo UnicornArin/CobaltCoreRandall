@@ -61,7 +61,7 @@ internal sealed class Rondell : Card
         actions.Add(
         new ASynergize
         {
-            count = upgrade != Upgrade.None ? 3 : 6
+            count = upgrade == Upgrade.None ? 3 : 6
         });
 
         return actions;
