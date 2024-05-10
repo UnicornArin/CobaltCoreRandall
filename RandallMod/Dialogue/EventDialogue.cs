@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using RandallMod;
-
-namespace RandallMod;
+﻿namespace RandallMod;
 
 internal static class EventDialogue
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RandallMod;
+﻿namespace RandallMod;
 
 internal sealed class CustomSay : Say
 {

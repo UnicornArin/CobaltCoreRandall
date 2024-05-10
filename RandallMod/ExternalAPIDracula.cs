@@ -1,7 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-
-namespace Shockah.Soggins;
+﻿namespace Shockah.Soggins;
 
 public interface ExternalAPIDracula
 {

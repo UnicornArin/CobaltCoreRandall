@@ -139,7 +139,10 @@
             "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in draw pile, then discard, then hand."
         },
         "AVariableHintFake": {
-            "description": "Your Partial Statuses ({{Amount}})"
+            "description": {
+                "stateful": "<c=action>X</c> = Your <c=status>PARTIAL STATUSES</c> (<c=keyword>{{Amount}}</c>).",
+                "stateless": "<c=action>X</c> = Your <c=status>PARTIAL STATUSES</c>."
+            }
         }
     },
     "trait": {

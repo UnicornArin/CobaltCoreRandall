@@ -1,11 +1,6 @@
-﻿using FMOD;
-using FSPRO;
-using Microsoft.Xna.Framework.Audio;
-using Newtonsoft.Json;
+﻿using FSPRO;
 using Nickel;
-using RandallMod;
 using RandallMod.Artifacts;
-using System.Collections.Generic;
 
 namespace RandallMod;
 
@@ -43,10 +38,10 @@ public sealed class ASynergize : CardAction
     {
         foreach (Card card in cardList.Shuffle(s.rngActions))
         {
-            bool isSynergized = TraitManager.IsSynergized(card);
+            bool isSynergized = TraitManager.IsSynergized(card, s);
             if (!isSynergized)
             {
-                TraitManager.SetSynergized(card, true);
+                TraitManager.SetSynergized(card, s, true);
                 return true;
             }
         }
@@ -60,12 +55,13 @@ public sealed class ASynergize : CardAction
         //    @object.hilight = 2;
 
         return [
-            new CustomTTGlossary(
-                CustomTTGlossary.GlossaryType.action,
-                () => ModInit.Instance.IconSynzergize.Sprite,
-                () => ModInit.Instance.Localizations.Localize(["action", "ASynergize", "name"]),
-                () => ModInit.Instance.Localizations.Localize(["action", "ASynergize", "description"], new { count = count })
-            )
+            new GlossaryTooltip($"action.{ModInit.Instance.Package.Manifest.UniqueName}::Synergize")
+            {
+                Icon = ModInit.Instance.IconSynzergize.Sprite,
+                TitleColor = Colors.action,
+                Title = ModInit.Instance.Localizations.Localize(["action", "ASynergize", "name"]),
+                Description = ModInit.Instance.Localizations.Localize(["action", "ASynergize", "description"], new { count = count })
+            }
         ];
     }
 

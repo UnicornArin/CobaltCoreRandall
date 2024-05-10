@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RandallMod
+﻿namespace RandallMod
 {
     public partial interface IKokoroApi
     {
+        Color DefaultActiveStatusBarColor { get; }
+        Color DefaultInactiveStatusBarColor { get; }
+
         IActionApi Actions { get; }
         void RegisterStatusRenderHook(IStatusRenderHook hook, double priority);
 
@@ -19,6 +16,10 @@ namespace RandallMod
     }
     public interface IStatusRenderHook
     {
-        List<Tooltip> OverrideStatusTooltips(Status status, int amount, Ship? ship, List<Tooltip> tooltips);
+        List<Tooltip> OverrideStatusTooltips(Status status, int amount, Ship? ship, List<Tooltip> tooltips) => tooltips;
+        bool? ShouldOverrideStatusRenderingAsBars(State state, Combat combat, Ship ship, Status status, int amount) => null;
+        (IReadOnlyList<Color> Colors, int? BarTickWidth) OverrideStatusRendering(State state, Combat combat, Ship ship, Status status, int amount) => new();
     }
+
+
 }

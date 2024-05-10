@@ -1,12 +1,4 @@
-﻿using FMOD;
-using FSPRO;
-using Microsoft.Xna.Framework.Audio;
-using Newtonsoft.Json;
-using RandallMod;
-using RandallMod.Artifacts;
-using System.Collections.Generic;
-
-namespace RandallMod;
+﻿namespace RandallMod;
 
 public sealed class ACheapSynergy : CardAction
 {
@@ -14,7 +6,7 @@ public sealed class ACheapSynergy : CardAction
     public override void Begin(G g, State s, Combat c)
     {
         c.hand.ForEach(h => {
-            if (h.IsSynergized()) {
+            if (h.IsSynergized(s)) {
                 h.discount = h.discount > -1 ? -1 : h.discount;
             }
         });

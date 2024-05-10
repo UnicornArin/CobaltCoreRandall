@@ -1,13 +1,4 @@
-﻿using HarmonyLib;
-using Microsoft.Extensions.Logging;
-using RandallMod;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RandallMod
+﻿namespace RandallMod
 {
     public class OnTurnBeginHandler
     {

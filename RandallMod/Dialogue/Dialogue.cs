@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RandallMod;
+﻿namespace RandallMod;
 
 internal static class Dialogue
 {

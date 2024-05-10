@@ -1,8 +1,4 @@
-﻿using Nickel;
-using System.Collections.Generic;
-using System.Reflection;
-
-namespace RandallMod;
+﻿namespace RandallMod;
 
 internal sealed class TemplatyTemplate : Card
 {

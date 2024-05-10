@@ -1,18 +1,12 @@
 ﻿using HarmonyLib;
 using Microsoft.Extensions.Logging;
-using Microsoft.Win32;
 using Nanoray.PluginManager;
 using Nickel;
 using RandallMod.Artifacts;
 using Shockah.Soggins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace RandallMod
 {
-    //removed sealed to try and hook artifact like behavior
     public sealed class ModInit : SimpleMod, IStatusRenderHook
     {
         
@@ -20,7 +14,7 @@ namespace RandallMod
 
         internal Harmony Harmony { get; }
         internal IKokoroApi KokoroApi { get; }
-        internal IMoreDifficultiesApi MoreDifficultiesApi { get; }
+        internal IMoreDifficultiesApi? MoreDifficultiesApi { get; }
         internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
         internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
         internal ISpriteEntry PartialStatusIcon { get; }
@@ -40,7 +34,8 @@ namespace RandallMod
         internal IStatusEntry DummyHalvesStatus { get; }
         internal IShipEntry RandallShip { get; }
 
-        //Initialize TraitSprites
+        //Initialize Trait
+        internal ICardTraitEntry SynergizedTrait { get; private set; } = null!;
         internal ISpriteEntry SynergyChargeSprite { get; private set; } = null!;
         internal ISpriteEntry IconSynzergize { get; private set; } = null!;
 
@@ -118,7 +113,7 @@ namespace RandallMod
             KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!;
             KokoroApi.RegisterStatusRenderHook(this, 0);
             //Alt Deck check
-            MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties")!;
+            MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties");
 
             //i18n setup (This has to go on top for reasons
             this.AnyLocalizations = new JsonLocalizationProvider(
@@ -497,13 +492,6 @@ namespace RandallMod
             DisposableWinglets.Register(package, helper);
             DisposableShredder.Register(package, helper);
 
-            //Reminder, Shockah hates it, need to fix
-            //But it works, we take those
-            ModInit.Instance.Helper.Events.RegisterBeforeArtifactsHook(nameof(Artifact.OnCombatEnd), (State state) =>
-            {
-                state.rewardsQueue.QueueImmediate(new ARemoveAllSynergy() { });
-            }, priority: 0);
-
             //Register Artifacts
             SparePieces.Register(helper);
             EnhancedMaterials.Register(helper);
@@ -519,33 +507,60 @@ namespace RandallMod
             SynergyChargeSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconChargeUp2.png"));
             IconSynzergize = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconSynergize.png"));
 
-            /*
-            //BloodTap API
-            if (contactPoint.GetApi<ExternalAPIDracula>("Shockah.Dracula") is { } draculaApi)
+            //Register trait
+            SynergizedTrait = helper.Content.Cards.RegisterTrait("Synergized", new()
             {
-                draculaApi.RegisterBloodTapOptionProvider(ModInit.Instance.ArchiveStatus.Status.Id!.Value, (_, _, status) => [
-                    new AHurt { targetPlayer = true, hurtAmount = 1 },
-                    new AStatus { targetPlayer = true, status = status, statusAmount = 3 },
-                ]);
-                draculaApi.RegisterBloodTapOptionProvider((Status)ExtraApologiesStatus.Id!.Value, (_, _, status) => [
-                    new AHurt { targetPlayer = true, hurtAmount = 1 },
-                    new AStatus { targetPlayer = true, status = status, statusAmount = 1 },
-                ]);
-                draculaApi.RegisterBloodTapOptionProvider((Status)ConstantApologiesStatus.Id!.Value, (_, _, status) => [
+                Icon = (_, _) => SynergyChargeSprite.Sprite,
+                Name = AnyLocalizations.Bind(["trait", "Synergized", "name"]).Localize,
+                Tooltips = (_, _) => [
+                    new GlossaryTooltip($"cardtrait.{Package.Manifest.UniqueName}::Synergized")
+                    {
+                        Icon = SynergyChargeSprite.Sprite,
+                        TitleColor = Colors.cardtrait,
+                        Title = Localizations.Localize(["trait", "Synergized", "name"]),
+                        Description = Localizations.Localize(["trait", "Synergized", "description"])
+                    }
+                ]
+            });
+
+            helper.Events.OnModLoadPhaseFinished += (_, phase) =>
+            {
+                if (phase != ModLoadPhase.AfterDbInit)
+                    return;
+
+                var draculaApi = helper.ModRegistry.GetApi<ExternalAPIDracula>("Shockah.Dracula");
+                if (draculaApi is null)
+                    return;
+
+                draculaApi.RegisterBloodTapOptionProvider(CoPilotStatus.Status, (_, _, status) => [
                     new AHurt { targetPlayer = true, hurtAmount = 2 },
                     new AStatus { targetPlayer = true, status = status, statusAmount = 1 },
+                    new AStatus { targetPlayer = true, status = HalfEvadeStatus.Status, statusAmount = 1 },
                 ]);
-            }*/
+                draculaApi.RegisterBloodTapOptionProvider(AuxiliaryShieldsStatus.Status, (_, _, status) => [
+                    new AHurt { targetPlayer = true, hurtAmount = 2 },
+                    new AStatus { targetPlayer = true, status = status, statusAmount = 1 },
+                    new AStatus { targetPlayer = true, status = HalfShieldStatus.Status, statusAmount = 1 },
+                ]);
+                draculaApi.RegisterBloodTapOptionProvider(ArchiveStatus.Status, (_, _, status) => [
+                    new AHurt { targetPlayer = true, hurtAmount = 2 },
+                    new AStatus { targetPlayer = true, status = status, statusAmount = 1 },
+                    new AStatus { targetPlayer = true, status = HalfCardStatus.Status, statusAmount = 1 },
+                ]);
+                draculaApi.RegisterBloodTapOptionProvider(OverchargeStatus.Status, (_, _, status) => [
+                    new AHurt { targetPlayer = true, hurtAmount = 1 },
+                    new AStatus { targetPlayer = true, status = status, statusAmount = 1 },
+                    new ASynergize { count = 6 },
+                ]);
+            };
 
             //Dialogue patching
             Dialogue.Inject();
 
-            //This has to be at the end, this applies all Harmony patches
+            //This applies all Harmony patches
             //This is an instance method, THIS instance is calling it, this. can be removed
             //passing the package info as a parameter
             this.ApplyHarmonyPatches(package);
-            Harmony harmony = new Harmony(package.Manifest.UniqueName);
-            CustomTTGlossary.ApplyPatches(harmony);
         }
 
         private void ApplyHarmonyPatches(IPluginPackage<IModManifest> package)
@@ -569,18 +584,8 @@ namespace RandallMod
             );
 
             harmony.Patch(
-                //Card Render Transpiler for Traits
-                original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.Render)),
-                transpiler: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.Card_Render_Transpiler)))
-            );
-
-            harmony.Patch(
                 original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.GetActionsOverridden)),
                 postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.HarmonyPostfix_Card_GetActionsOverridden)))
-            );
-            harmony.Patch(
-                original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.GetAllTooltips)),
-                postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(TraitManager), nameof(TraitManager.HarmonyPostfix_Card_Tooltip)))
             );
         }
 
@@ -766,6 +771,22 @@ namespace RandallMod
                     glossary.vals = new object[] { $"<c=boldPink>{overchargeValue + 3}</c>", $"<c=boldPink>{overchargeValue + 1}</c>" };
             }
             return tooltips;
+        }
+
+        public bool? ShouldOverrideStatusRenderingAsBars(State state, Combat combat, Ship ship, Status status, int amount)
+            => status == Instance.ChargeUpStatus.Status ? true : null;
+
+        public (IReadOnlyList<Color> Colors, int? BarTickWidth) OverrideStatusRendering(State state, Combat combat, Ship ship, Status status, int amount)
+        {
+            if (status != Instance.ChargeUpStatus.Status)
+                return new();
+
+            var max = ship.Get(Instance.OverchargeStatus.Status) + 3;
+
+            var colors = Enumerable.Range(0, max)
+                .Select(i => amount > i ? KokoroApi.DefaultActiveStatusBarColor : KokoroApi.DefaultInactiveStatusBarColor)
+                .ToList();
+            return (colors, null);
         }
     }
 }

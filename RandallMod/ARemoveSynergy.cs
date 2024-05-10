@@ -1,9 +1,4 @@
-﻿using FMOD;
-using FSPRO;
-using Microsoft.Xna.Framework.Audio;
-using Newtonsoft.Json;
-using RandallMod;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 
 namespace RandallMod;
 
@@ -19,7 +14,7 @@ public sealed class ARemoveSynergy : CardAction
         Card? card = c.hand.Concat(s.deck).Concat(c.discard).Concat(c.exhausted).FirstOrDefault(c => c.uuid == CardId);
         if (card is null)
             return;
-        TraitManager.SetSynergized(card, false);
+        TraitManager.SetSynergized(card, s, false);
         //Audio.Play(Event.Status_PowerUp);
     }
 
