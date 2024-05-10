@@ -4,6 +4,11 @@
     {
         public int displayAmount;
 
+        public AVariableHintFake() : base()
+        {
+            hand = true;
+        }
+
         public override Icon? GetIcon(State s)
         {
             return new Icon(ModInit.Instance.PartialStatusIcon.Sprite, null, Colors.textMain);

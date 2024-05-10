@@ -57,7 +57,7 @@ internal sealed class ParticleBeam : Card
 
         actions.Add(new AVariableHintFake
         {
-            //displayAmount = GetX(s, c),
+            displayAmount = GetX(s, c),
         });
 
         actions.Add(new AAttack
