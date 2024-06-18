@@ -58,7 +58,7 @@ namespace RandallMod.Artifacts
                         {
                             who = Deck.dizzy.Key(),
                             Text = "I'll just pretend I understood that.",
-                            loopTag = "explain"
+                            loopTag = "explains"
                         }
                     }
                 }
