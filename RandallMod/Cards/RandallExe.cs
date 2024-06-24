@@ -18,7 +18,7 @@ internal sealed class RandallExe : Card
                 upgradesTo = [Upgrade.A, Upgrade.B],
             },
             Name = ModInit.Instance.AnyLocalizations.Bind(["card", "RandallExe", "name"]).Localize,
-            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt13.png")).Sprite
+            Art = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/RandallCardArt23.png")).Sprite
         });
     }
 

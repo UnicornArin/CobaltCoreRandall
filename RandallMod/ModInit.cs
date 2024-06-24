@@ -164,6 +164,8 @@ namespace RandallMod
             CoPilot.Register(package, helper);
             AuxiliaryShields.Register(package, helper);
             Archive.Register(package, helper);
+            //EXE
+            RandallExe.Register(package, helper);
 
             //CharacterAnimations
             helper.Content.Characters.RegisterCharacterAnimation("Neutral", new()
