@@ -36,6 +36,18 @@
             "description": "Completes all partial statuses."
         },
 
+<<<<<<< Updated upstream
+=======
+        "RandallExe": {
+            "name": "Randall.EXE",
+            "description": {
+                "None": "Add 1 of 2 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
+                "A": "Add 1 of 2 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
+                "B": "Add 1 of 3 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand, twice."
+            }
+        },
+
+>>>>>>> Stashed changes
         "EmergencyProtocol": { "name": "Emergency Protocol" },
         "EnhancedMagnify": { "name": "Enhanced Magnify" },
         "CoPilot": { "name": "Co-Pilot" },

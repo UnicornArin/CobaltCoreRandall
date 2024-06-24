@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Nanoray.PluginManager;
 using Nickel;
 using RandallMod.Artifacts;
+using RandallMod.Jester;
 using Shockah.Soggins;
 
 namespace RandallMod
@@ -15,6 +16,7 @@ namespace RandallMod
         internal Harmony Harmony { get; }
         internal IKokoroApi KokoroApi { get; }
         internal IMoreDifficultiesApi? MoreDifficultiesApi { get; }
+        internal IJesterApi? JesterApi { get; }
         internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
         internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
         internal ISpriteEntry PartialStatusIcon { get; }
@@ -42,6 +44,9 @@ namespace RandallMod
         //Initialize Deck
         internal IDeckEntry RandallDeck { get; }
         internal IDeckEntry RandallShipDeck { get; }
+
+        //ExeTypes
+        private readonly HashSet<Type> ExeTypes = [];
 
         //Initialize Common Artifacts
         internal static IReadOnlyList<Type> CommonArtifacts { get; } = [
@@ -114,6 +119,8 @@ namespace RandallMod
             KokoroApi.RegisterStatusRenderHook(this, 0);
             //Alt Deck check
             MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties");
+            //This is gonna do Jester BS
+            JesterApi = helper.ModRegistry.GetApi<IJesterApi>("rft.Jester");
 
             //i18n setup (This has to go on top for reasons
             this.AnyLocalizations = new JsonLocalizationProvider(
@@ -159,6 +166,8 @@ namespace RandallMod
             CoPilot.Register(package, helper);
             AuxiliaryShields.Register(package, helper);
             Archive.Register(package, helper);
+            //Exe
+            RandallExe.Register(package, helper);
 
             //CharacterAnimations
             helper.Content.Characters.RegisterCharacterAnimation("Neutral", new()
@@ -554,6 +563,9 @@ namespace RandallMod
                 ]);
             };
 
+            //Actual Jester BS here
+            JesterApi?.RegisterProvider(new RandallJesterProvider());
+
             //Dialogue patching
             Dialogue.Inject();
 
@@ -788,5 +800,41 @@ namespace RandallMod
                 .ToList();
             return (colors, null);
         }
+
+        private void UpdateExeTypesIfNeeded()
+        {
+            if (ExeTypes.Count != 0)
+                return;
+
+            foreach (var deck in NewRunOptions.allChars)
+                if (Helper.Content.Characters.LookupByDeck(deck) is { } character)
+                    if (character.Configuration.ExeCardType is { } exeCardType)
+                        ExeTypes.Add(exeCardType);
+        }
+        /*
+        internal IEnumerable<Type> GetExeCardTypes()
+        {
+            if (EssentialsApi is { } essentialsApi)
+            {
+                foreach (var deck in NewRunOptions.allChars)
+                    if (essentialsApi.GetExeCardTypeForDeck(deck) is { } exeCardType)
+                        yield return exeCardType;
+            }
+            else
+            {
+                UpdateExeTypesIfNeeded();
+                foreach (var exeCardType in ExeTypes)
+                    yield return exeCardType;
+            }
+        }
+
+        internal bool IsExeCardType(Type cardType)
+        {
+            if (EssentialsApi is { } essentialsApi)
+                return essentialsApi.IsExeCardType(cardType);
+
+            UpdateExeTypesIfNeeded();
+            return ExeTypes.Contains(cardType);
+        }*/
     }
 }
