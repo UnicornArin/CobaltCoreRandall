@@ -171,11 +171,6 @@ namespace RandallMod
             CoPilot.Register(package, helper);
             AuxiliaryShields.Register(package, helper);
             Archive.Register(package, helper);
-<<<<<<< HEAD
-            //Exe
-=======
-            //EXE
->>>>>>> Likely-release
             RandallExe.Register(package, helper);
 
             //CharacterAnimations
