@@ -27,8 +27,10 @@ internal sealed class Rondell : Card
     public override CardData GetData(State state)
         => new()
         {
-            cost = upgrade != Upgrade.B ? 1 : 2,
-            retain = true
+            //cost = upgrade != Upgrade.B ? 1 : 2,
+            cost = 1,
+            retain = true,
+            recycle = upgrade == Upgrade.B
         };
 
     //Actions
@@ -41,26 +43,22 @@ internal sealed class Rondell : Card
         {
             targetPlayer = true,
             status = Status.tempShield,
-            statusAmount = upgrade != Upgrade.B ? 2 : 3
+            statusAmount = upgrade != Upgrade.B ? 1 : 1
         });
 
-        if (upgrade == Upgrade.B)
+        actions.Add(
+        new AStatus
         {
-            actions.Add(
-            new AStatus
-            {
-                targetPlayer = true,
-                status = ModInit.Instance.HalfTempShieldStatus.Status,
-                statusAmount = 1,
-                timer = 0.2
-            });
-        }
-
+            targetPlayer = true,
+            status = ModInit.Instance.HalfTempShieldStatus.Status,
+            statusAmount = 1,
+            timer = 0.2
+        });
 
         actions.Add(
         new ASynergize
         {
-            count = upgrade == Upgrade.None ? 3 : 6
+            count = upgrade == Upgrade.A ? 6 : 3
         });
 
         return actions;

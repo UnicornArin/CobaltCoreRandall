@@ -46,7 +46,7 @@ internal sealed class SynergyEvade : Card
         actions.Add(
         new ASynergize
         {
-            count = upgrade != Upgrade.B ? 1 : 3
+            count = upgrade != Upgrade.B ? 2 : 5
         });
 
         if (upgrade == Upgrade.A)

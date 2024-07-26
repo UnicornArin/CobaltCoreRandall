@@ -29,7 +29,7 @@
         "SynergyStrike": { "name": "Synergy Strike" },
         "Cooperate": {
             "name": "Cooperate",
-            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synzergized</c> cards in hand."
+            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synergized</c> cards in hand."
         },
         "CompleteSet": {
             "name": "Complete Set",
@@ -38,7 +38,7 @@
 
 
         "RandallExe": {
-            "name": "Randall.exe",
+            "name": "Randall.EXE",
             "description": {
                 "None": "Add 1 of 3 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
                 "A": "Add 1 of 3 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
