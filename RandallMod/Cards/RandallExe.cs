@@ -14,7 +14,11 @@ internal sealed class RandallExe : Card
             Meta = new()
             {
                 deck = Deck.colorless,
+<<<<<<< HEAD
                 rarity = Rarity.common,
+=======
+                rarity = Rarity.uncommon,
+>>>>>>> Likely-release
                 upgradesTo = [Upgrade.A, Upgrade.B],
             },
             Name = ModInit.Instance.AnyLocalizations.Bind(["card", "RandallExe", "name"]).Localize,
@@ -37,15 +41,23 @@ internal sealed class RandallExe : Card
         List<CardAction> actions = [];
         actions.Add(new ACardOffering
         {
+<<<<<<< HEAD
             amount = upgrade == Upgrade.B ? 3 : 2,
+=======
+            amount = 3,
+>>>>>>> Likely-release
             limitDeck = ModInit.Instance.RandallDeck.Deck,
             makeAllCardsTemporary = true,
             overrideUpgradeChances = false,
             canSkip = false,
             inCombat = true,
             discount = -1,
+<<<<<<< HEAD
             dialogueSelector = $".summon{ModInit.Instance.RandallDeck.UniqueName}",
             timer = upgrade == Upgrade.B ? 2 : 1
+=======
+            dialogueSelector = $".summon{ModInit.Instance.RandallDeck.UniqueName}"
+>>>>>>> Likely-release
         });
 
         if (upgrade == Upgrade.B)

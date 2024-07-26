@@ -27,8 +27,8 @@ internal sealed class Overcharge : Card, IRegisterableCard
     public override CardData GetData(State state)
         => new()
         {
-            cost = upgrade == Upgrade.B ? 3 : 1,
-            exhaust = true
+            cost = 1,
+            exhaust = upgrade != Upgrade.B ? true : false
         };
 
     //Actions
@@ -48,8 +48,7 @@ internal sealed class Overcharge : Card, IRegisterableCard
         actions.Add(
         new ASynergize
         {
-            count = upgrade == Upgrade.None ? 4 : upgrade == Upgrade.A ? 5 : 99,
-            dialogueSelector = ".RandallModOverchargeB"
+            count = upgrade == Upgrade.None ? 4 : upgrade == Upgrade.A ? 5 : 3,
         });
 
 

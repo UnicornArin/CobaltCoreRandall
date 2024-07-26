@@ -33,7 +33,7 @@ namespace RandallMod
         internal IStatusEntry OverchargeStatus { get; }
         internal IStatusEntry HalfCardStatus { get; }
         internal IStatusEntry ArchiveStatus { get; }
-        internal IStatusEntry DummyHalvesStatus { get; }
+        //internal IStatusEntry DummyHalvesStatus { get; } OBSOLETE
         internal IShipEntry RandallShip { get; }
 
         //Initialize Trait
@@ -105,8 +105,13 @@ namespace RandallMod
             typeof(DisposableShredder),
         };
 
+        internal static readonly Type[] RandallExeCard = new Type[]
+        {
+            typeof(RandallExe),
+        };
+
         internal static IEnumerable<Type> AllCards
-            => StarterCards.Concat(CommonCards).Concat(UncommonCards).Concat(RareCards)/*.Append(typeof(RandallExeCard))*/;
+            => StarterCards.Concat(CommonCards).Concat(UncommonCards).Concat(RareCards).Append(typeof(RandallExe));
         internal static IEnumerable<Type> AllArtifacts
             => CommonArtifacts.Concat(BossArtifacts);
 
@@ -137,7 +142,7 @@ namespace RandallMod
                 Definition = new() { color = new Color("3e8ad5"), titleColor = new Color("ffffff") },
                 DefaultCardArt = StableSpr.cards_colorless,
                 BorderSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Cards/border_randall.png")).Sprite,
-                Name = this.AnyLocalizations.Bind(["character", "name"]).Localize
+                Name = this.AnyLocalizations.Bind(["character", "name"]).Localize,
             });
 
             //Register cards:
@@ -166,7 +171,11 @@ namespace RandallMod
             CoPilot.Register(package, helper);
             AuxiliaryShields.Register(package, helper);
             Archive.Register(package, helper);
+<<<<<<< HEAD
             //Exe
+=======
+            //EXE
+>>>>>>> Likely-release
             RandallExe.Register(package, helper);
 
             //CharacterAnimations
@@ -260,7 +269,12 @@ namespace RandallMod
                 Deck = RandallDeck.Deck,
                 Description = this.AnyLocalizations.Bind(["character", "description"]).Localize,
                 BorderSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Character/char_randall.png")).Sprite,
-                StarterCardTypes = StarterCards,
+                Starters = new StarterDeck{ cards = new List<Card> {
+                    new SynergyEvade(),
+                    new SynergyShield()
+                    }
+                },
+                ExeCardType = typeof(RandallExe)
             });
 
             MoreDifficultiesApi?.RegisterAltStarters(RandallDeck.Deck, new StarterDeck
@@ -386,7 +400,7 @@ namespace RandallMod
             
         
             PartialStatusIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Icons/IconDummyHalves.png"));
-            /*
+            /* OBSOLETE
             DummyHalvesStatus = helper.Content.Statuses.RegisterStatus("DummyHalvesStatus", new()
             {
                 Definition = new()
