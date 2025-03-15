@@ -24,7 +24,7 @@ namespace RandallMod.Artifacts
         public override void OnTurnStart(State s, Combat c) {
             if (c.turn > 0) {
                 c.QueueImmediate(
-                    new ASynergize { count = 1,
+                    new ASynergize { count = 2,
                     artifactPulse = Key()}
                 );
             }

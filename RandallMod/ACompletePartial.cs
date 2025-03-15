@@ -9,12 +9,10 @@ public sealed class ACompletePartial : CardAction
         if (s.ship.Get(ModInit.Instance.HalfDamageStatus.Status) == 1)
         {
             c.QueueImmediate([
-                new AStatus()
-                {
-                    timer = 0.2,
+                new AHurt(){
+                    timer = 0.5,
+                    hurtAmount = 1,
                     targetPlayer = true,
-                    status = ModInit.Instance.HalfDamageStatus.Status,
-                    statusAmount = 1,
                 }
             ]);
         }
@@ -23,9 +21,9 @@ public sealed class ACompletePartial : CardAction
             c.QueueImmediate([
                 new AStatus()
                 {
-                    timer = 0.2,
+                    timer = 0.5,
                     targetPlayer = true,
-                    status = ModInit.Instance.HalfEvadeStatus.Status,
+                    status = Status.evade,
                     statusAmount = 1,
                 }
             ]);
@@ -35,9 +33,9 @@ public sealed class ACompletePartial : CardAction
             c.QueueImmediate([
                 new AStatus()
                 {
-                    timer = 0.2,
+                    timer = 0.5,
                     targetPlayer = true,
-                    status = ModInit.Instance.HalfShieldStatus.Status,
+                    status = Status.shield,
                     statusAmount = 1,
                 }
             ]);
@@ -47,9 +45,9 @@ public sealed class ACompletePartial : CardAction
             c.QueueImmediate([
                 new AStatus()
                 {
-                    timer = 0.2,
+                    timer = 0.5,
                     targetPlayer = true,
-                    status = ModInit.Instance.HalfTempShieldStatus.Status,
+                    status = Status.tempShield,
                     statusAmount = 1,
                 }
             ]);
@@ -57,37 +55,29 @@ public sealed class ACompletePartial : CardAction
         if (s.ship.Get(ModInit.Instance.HalfCardStatus.Status) == 1)
         {
             c.QueueImmediate([
-                new AStatus()
-                {
-                    timer = 0.2,
-                    targetPlayer = true,
-                    status = ModInit.Instance.HalfCardStatus.Status,
-                    statusAmount = 1,
+                new ADrawCard(){
+                    count = 1,
+                    timer = 0.5,
                 }
             ]);
         }
         if (s.ship.Get(Status.energyFragment) > 0)
         {
             c.QueueImmediate([
-                new AStatus()
+                new AEnergy()
                 {
-                    timer = 0.2,
-                    targetPlayer = true,
-                    status = Status.energyFragment,
-                    statusAmount = 3 - s.ship.Get(Status.energyFragment),
+                    timer = 0.5,
+                    changeAmount = 1,
                 }
             ]);
         }
         if (s.ship.Get(ModInit.Instance.ChargeUpStatus.Status) > 0)
         {
             c.QueueImmediate([
-                new AStatus()
-                {
-                    timer = 0.2,
-                    targetPlayer = true,
-                    status = ModInit.Instance.ChargeUpStatus.Status,
-                    statusAmount = 3 - s.ship.Get(ModInit.Instance.ChargeUpStatus.Status) + s.ship.Get(ModInit.Instance.OverchargeStatus.Status),
-                }
+                new AAttack() {
+                    timer = 0.5,
+                    damage = Card.GetActualDamage(g.state, 1 + g.state.ship.Get(ModInit.Instance.OverchargeStatus.Status))
+                },
             ]);
         }
     }

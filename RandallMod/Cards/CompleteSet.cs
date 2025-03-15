@@ -27,7 +27,7 @@ internal sealed class CompleteSet : Card
     public override CardData GetData(State state)
         => new()
         {
-            cost = upgrade != Upgrade.A ? 1 : 0,
+            cost = upgrade != Upgrade.A ? 2 : 1,
             exhaust = upgrade != Upgrade.B ? true : false,
             retain = upgrade != Upgrade.B ? true : false,
             description = ModInit.Instance.Localizations.Localize(["card", "CompleteSet", "description"])

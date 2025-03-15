@@ -32,17 +32,17 @@
             "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synergized</c> cards in hand."
         },
         "CompleteSet": {
-            "name": "Complete Set",
-            "description": "Completes all partial statuses."
+            "name": "Virtual Completion",
+            "description": "Grants the benefits of partial statuses."
         },
 
 
         "RandallExe": {
             "name": "Randall.EXE",
             "description": {
-                "None": "Add 1 of 3 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
-                "A": "Add 1 of 3 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
-                "B": "Add 1 of 3 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand, twice."
+                "None": "Add 1 of 2 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
+                "A": "Add 1 of 2 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand.",
+                "B": "Add 1 of 2 <c=cardtrait>discount, temp</c> <c=3e8ad5>Randall</c> cards to your hand, twice."
             }
         },
 
@@ -112,27 +112,27 @@
     "artifact": {
         "SparePiecesArtifact": {
             "name": "SPARE PIECES",
-            "description": "On turn start: gain 1 random <c=status>HALF EVADE</c>, <c=status>HALF SHIELD</c> or <c=status>HALF CARD</c>."
+            "description": "Gain a random <c=status>HALF EVADE</c>, <c=status>HALF SHIELD</c> or <c=status>HALF CARD</c> at the start of every turn."
         },
         "EnhancedMaterialsArtifact": {
             "name": "ENHANCED MATERIALS",
-            "description": "On pickup: gain 1 <c=status>MAX HULL</c> and 1 <c=status>MAX SHIELD</c>, heal 2 hull."
+            "description": "Gain 1 <c=status>MAX HULL</c> and 1 <c=status>MAX SHIELD</c> and heal 2 hull on pickup."
         },
         "PatchingProgramArtifact": {
             "name": "PATCHING PROGRAM",
-            "description": "On pickup: select a card to upgrade."
+            "description": "Select a card to upgrade on pickup."
         },
         "TeapotArtifact": {
             "name": "TEAPOT",
-            "description": "On turn start: A card in draw pile, discard or hand becomes Synergized."
+            "description": "2 random card become <c=cardtrait>synergized</c> at the start of turn, prioritizes the draw pile."
         },
         "DivertedChargeArtifact": {
             "name": "DIVERTED CHARGE",
-            "description": "On turn start: Spend 2 <c=status>SYNERGY CHARGE</c> to gain 1 energy."
+            "description": "At the start of turn spend 2 <c=status>SYNERGY CHARGE</c> to gain 1 energy if possible."
         },
         "RepurposedPartsArtifact": {
             "name": "HALF OF A COOKIE",
-            "description": "On turn start: Spend 1 random <c=status>Half Evade</c> or <c=status>Half Shield</c> or <c=status>Half Temp Shield</c> or <c=status>Half Card</c> or <c=status>Half Damage</c> to draw a card."
+            "description": "Spend 1 random <c=status>Half Evade</c> or <c=status>Half Shield</c> or <c=status>Half Temp Shield</c> or <c=status>Half Card</c> or <c=status>Half Damage</c> to draw a card at the start of turn."
         },
         "BonusSynergyArtifact": {
             "name": "SYNERGY BOOSTER",

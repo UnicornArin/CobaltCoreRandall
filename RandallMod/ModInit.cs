@@ -430,6 +430,10 @@ namespace RandallMod
             {
                 Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipCockpit.png")).Sprite
             });
+            var shipCockpit2 = helper.Content.Ships.RegisterPart("RandallShip.Cockpit2", new()
+            {
+                Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipCockpit2.png")).Sprite
+            });
             var shipCannon = helper.Content.Ships.RegisterPart("RandallShip.Cannon", new()
             {
                 Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/Ship/RandallShipCannon.png")).Sprite
@@ -473,7 +477,7 @@ namespace RandallMod
                         new Part
                         {
                             type = PType.cockpit,
-                            skin = shipCockpit.UniqueName
+                            skin = shipCockpit2.UniqueName
                         },
                         new Part
                         {

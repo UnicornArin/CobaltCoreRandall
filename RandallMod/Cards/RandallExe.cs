@@ -37,7 +37,7 @@ internal sealed class RandallExe : Card
         List<CardAction> actions = [];
         actions.Add(new ACardOffering
         {
-            amount = upgrade == Upgrade.B ? 3 : 2,
+            amount = 2,
             limitDeck = ModInit.Instance.RandallDeck.Deck,
             makeAllCardsTemporary = true,
             overrideUpgradeChances = false,
@@ -52,7 +52,7 @@ internal sealed class RandallExe : Card
         {
             actions.Add(new ACardOffering
             {
-                amount = 3,
+                amount = 2,
                 limitDeck = ModInit.Instance.RandallDeck.Deck,
                 makeAllCardsTemporary = true,
                 overrideUpgradeChances = false,
