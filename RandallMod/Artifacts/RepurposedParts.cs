@@ -21,6 +21,16 @@ namespace RandallMod.Artifacts
             });
         }
 
+        public override List<Tooltip>? GetExtraTooltips()
+        => [
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfCardStatus.Status, 1),
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfEvadeStatus.Status, 1),
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfShieldStatus.Status, 1),
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfTempShieldStatus.Status, 1),
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfDamageStatus.Status, 1),
+            .. new ADrawCard { count = 1 }.GetTooltips(DB.fakeState)
+        ];
+
         public override void OnTurnStart(State s, Combat c) {
             List<Status> possibleStatuses = new List<Status>();
             if (s.ship.Get(ModInit.Instance.HalfCardStatus.Status) > 0) { possibleStatuses.Add(ModInit.Instance.HalfCardStatus.Status); }

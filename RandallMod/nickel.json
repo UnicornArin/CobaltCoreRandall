@@ -1,6 +1,6 @@
 {
     "UniqueName": "Arin.Randall",
-    "Version": "1.1.0",
+    "Version": "1.1.1",
     "RequiredApiVersion": "0.4.2",
     "EntryPointAssembly": "RandallMod.dll",
     "Dependencies": [
@@ -16,8 +16,13 @@
         {
             "UniqueName": "rft.Jester",
             "Version": "0.6.0",
-            "IsRequired":  false
+            "IsRequired": false
         }
     ],
+    "UpdateChecks": {
+        "NexusMods": {
+            "ID": 30
+        }
+    },
     "LoadPhase": "AfterDbInit"
 }

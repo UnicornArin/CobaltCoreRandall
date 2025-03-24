@@ -29,7 +29,7 @@
         "SynergyStrike": { "name": "Synergy Strike" },
         "Cooperate": {
             "name": "Cooperate",
-            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>Synergized</c> cards in hand."
+            "description": "<c=cardtrait>Discount</c> all <c=cardtrait>synergized</c> cards in hand."
         },
         "CompleteSet": {
             "name": "Virtual Completion",
@@ -124,15 +124,15 @@
         },
         "TeapotArtifact": {
             "name": "TEAPOT",
-            "description": "2 random card become <c=cardtrait>synergized</c> at the start of turn, prioritizes the draw pile."
+            "description": "2 random card become <c=cardtrait>synergized</c> at the start of turn."
         },
         "DivertedChargeArtifact": {
             "name": "DIVERTED CHARGE",
-            "description": "At the start of turn spend 2 <c=status>SYNERGY CHARGE</c> to gain 1 energy if possible."
+            "description": "At the start of turn spend 2 <c=status>SYNERGY CHARGE</c> to gain 1, <c=energy>ENERGY</c> if possible."
         },
         "RepurposedPartsArtifact": {
             "name": "HALF OF A COOKIE",
-            "description": "Spend 1 random <c=status>Half Evade</c> or <c=status>Half Shield</c> or <c=status>Half Temp Shield</c> or <c=status>Half Card</c> or <c=status>Half Damage</c> to draw a card at the start of turn."
+            "description": "Spend 1 random <c=status>HALF EVADE</c> or <c=status>HALF SHIELD</c> or <c=status>HALF TEMP SHIELD</c> or <c=status>HALF CARD</c> or <c=status>HALF DAMAGE</c> to draw a card at the start of turn."
         },
         "BonusSynergyArtifact": {
             "name": "SYNERGY BOOSTER",
@@ -140,12 +140,12 @@
         },
         "SynergyPowerArtifact": {
             "name": "RESIDUAL POWER",
-            "description": "Playing <c=cardtrait>Synergized</c> cards also grants <c=boldPink>1</c> <c=status>Energy Fragment</c>."
+            "description": "The first time each turn you play a <c=cardtrait>synergized</c> card also gain <c=boldPink>1</c> <c=status>ENERGY FRAGMENT</c>."
         }
     },
     "action": {
         "ASynergize": {
-            "name": "Synergize",
+            "name": "SYNERGIZE",
             "description": "Make {{count}} cards <c=status>SYNERGIZED</c>, prioritizes cards in draw pile, then discard, then hand."
         },
         "AVariableHintFake": {

@@ -738,8 +738,8 @@ namespace RandallMod
                     return;
 
             __instance.QueueImmediate([
-                new AHurt() { timer = 0, targetPlayer = false, hurtAmount = toAdd, hurtShieldsFirst = true },
                 new AStatus() { targetPlayer = false, status = partialStatus, statusAmount = -toAdd * 2 },
+                new AHurt() { timer = 0, targetPlayer = false, hurtAmount = toAdd, hurtShieldsFirst = true },
             ]);
         }
 

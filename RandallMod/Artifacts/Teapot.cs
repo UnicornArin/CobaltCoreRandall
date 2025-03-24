@@ -21,6 +21,11 @@ namespace RandallMod.Artifacts
             });
         }
 
+        public override List<Tooltip>? GetExtraTooltips()
+        => [
+            .. ModInit.Instance.SynergizedTrait.Configuration.Tooltips?.Invoke(MG.inst.g.state, null) ?? [],
+        ];
+
         public override void OnTurnStart(State s, Combat c) {
             if (c.turn > 0) {
                 c.QueueImmediate(

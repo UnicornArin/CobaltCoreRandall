@@ -21,6 +21,13 @@ namespace RandallMod.Artifacts
             });
         }
 
+        public override List<Tooltip>? GetExtraTooltips()
+        => [
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfEvadeStatus.Status, 1),
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfShieldStatus.Status, 1),
+            .. StatusMeta.GetTooltips(ModInit.Instance.HalfCardStatus.Status, 1),
+        ];
+
         public override void OnTurnStart(State s, Combat c) {
             if (c.turn > 0) { 
 

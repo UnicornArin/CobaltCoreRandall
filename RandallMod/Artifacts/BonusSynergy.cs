@@ -20,6 +20,10 @@ namespace RandallMod.Artifacts
                 Description = ModInit.Instance.AnyLocalizations.Bind(["artifact", "BonusSynergyArtifact", "description"]).Localize,
             });
         }
+        public override List<Tooltip>? GetExtraTooltips()
+        => [
+            .. ModInit.Instance.SynergizedTrait.Configuration.Tooltips?.Invoke(MG.inst.g.state, null) ?? [],
+        ];
         public override void OnCombatStart(State state, Combat combat)
         {
             base.OnCombatStart(state, combat);

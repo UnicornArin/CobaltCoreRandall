@@ -1,30 +1,67 @@
 ﻿using System.Reflection;
+using Newtonsoft.Json;
 using Nickel;
 
 namespace RandallMod.Artifacts
 {
     internal class SynergyPower : Artifact, IRegisterableArtifact
     {
+        private static ISpriteEntry ActiveSprite = null!;
+        private static ISpriteEntry InactiveSprite = null!;
+
+        [JsonProperty]
+        public bool TriggeredThisTurn;
         public static void Register(IModHelper helper)
         {
+            ActiveSprite = helper.Content.Sprites.RegisterSprite(ModInit.Instance.Package.PackageRoot.GetRelativeFile("assets/Artifacts/ArtifactSynergyPower.png"));
+            InactiveSprite = helper.Content.Sprites.RegisterSprite(ModInit.Instance.Package.PackageRoot.GetRelativeFile("assets/Artifacts/ArtifactSynergyPowerInactive.png"));
+
             helper.Content.Artifacts.RegisterArtifact("SynergyPowerArtifact", new()
             {
+                
                 ArtifactType = MethodBase.GetCurrentMethod()!.DeclaringType!,
                 Meta = new()
                 {
                     owner = ModInit.Instance.RandallDeck.Deck,
                     pools = [ArtifactPool.Boss]
                 },
-                Sprite = helper.Content.Sprites.RegisterSprite(ModInit.Instance.Package.PackageRoot.GetRelativeFile("assets/Artifacts/ArtifactSynergyPower.png")).Sprite,
+                Sprite = ActiveSprite.Sprite,
                 Name = ModInit.Instance.AnyLocalizations.Bind(["artifact", "SynergyPowerArtifact", "name"]).Localize,
                 Description = ModInit.Instance.AnyLocalizations.Bind(["artifact", "SynergyPowerArtifact", "description"]).Localize,
             });
         }
 
+        public override Spr GetSprite()
+        => (TriggeredThisTurn ? InactiveSprite : ActiveSprite).Sprite;
+
+        public override List<Tooltip>? GetExtraTooltips()
+        => [
+            .. ModInit.Instance.SynergizedTrait.Configuration.Tooltips?.Invoke(MG.inst.g.state, null) ?? [],
+            .. StatusMeta.GetTooltips(Status.energyFragment, 1),
+        ];
+
         public override void OnCombatStart(State state, Combat combat)
         {
             base.OnCombatStart(state, combat);
             Narrative.SpeakBecauseOfAction(MG.inst.g, combat, $".{Key()}Trigger");
+            TriggeredThisTurn = false;
+        }
+
+        public override void OnTurnStart(State state, Combat combat)
+        {
+            base.OnTurnStart(state, combat);
+            TriggeredThisTurn = false;
+        }
+
+        public override void OnPlayerPlayCard(int energyCost, Deck deck, Card card, State state, Combat combat, int handPosition, int handCount)
+        {
+            if (TriggeredThisTurn == false) {
+                base.OnPlayerPlayCard(energyCost, deck, card, state, combat, handPosition, handCount);
+                if (!ModInit.Instance.Helper.Content.Cards.IsCardTraitActive(state, card, ModInit.Instance.SynergizedTrait ))
+                    return;
+                combat.QueueImmediate(new AStatus { targetPlayer = true, status = Status.energyFragment, statusAmount = 1, artifactPulse = Key() });
+                TriggeredThisTurn = true;
+            }
         }
 
         public void InjectDialogue()
@@ -65,7 +102,7 @@ namespace RandallMod.Artifacts
                         {
                             who = Deck.dizzy.Key(),
                             Text = "Teamwork.",
-                            loopTag = "explain"
+                            loopTag = "explains"
                         },
                         new CustomSay()
                         {

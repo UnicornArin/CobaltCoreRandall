@@ -42,8 +42,6 @@ internal sealed class SlowBarrage : Card
             new AAttack
             {
                 damage = GetDmg(s, 1),
-                status = ModInit.Instance.HalfDamageStatus.Status,
-                statusAmount = 1
             });
         } else
         {

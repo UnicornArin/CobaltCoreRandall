@@ -15,20 +15,25 @@ namespace RandallMod
         public static void HarmonyPostfix_Card_GetActionsOverridden(State s, Card __instance, List<CardAction> __result) {
             if (__instance.IsSynergized(s)) {
 
+                /* DEPRECATED??
                 //This handles Bonus Energy Boss Artifact
                 var synergyPowerArtifact = s.EnumerateAllArtifacts().OfType<SynergyPower>().FirstOrDefault();
                 if (synergyPowerArtifact != null)
                 {
-                    __result.Add(ModInit.Instance.KokoroApi.Actions.MakeHidden(new AStatus()
+                    if (synergyPowerArtifact.TriggeredThisTurn == false)
                     {
-                        status = Status.energyFragment,
-                        statusAmount = 1,
-                        targetPlayer = true,
-                        timer = 0.2,
-                        artifactPulse = synergyPowerArtifact.Key()
-                })
-                    );  
-                }
+                        //synergyPowerArtifact.TriggeredThisTurn = true;
+                        __result.Add(ModInit.Instance.KokoroApi.Actions.MakeHidden(new AStatus()
+                        {
+                            status = Status.energyFragment,
+                            statusAmount = 1,
+                            targetPlayer = true,
+                            timer = 0.2,
+                            artifactPulse = synergyPowerArtifact.Key(),
+                        })
+                        );
+                    }
+                }*/
 
                 __result.Add(ModInit.Instance.KokoroApi.Actions.MakeHidden(new AStatus()
                 {

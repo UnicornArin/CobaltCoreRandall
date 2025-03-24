@@ -33,14 +33,14 @@ namespace RandallMod.Artifacts
 
             state.ship.hullMax += 1;
             state.ship.shieldMaxBase += 1;
-            int num = 3;
+            int num = 2;
             int num2 = num;
             foreach (Artifact item in state.EnumerateAllArtifacts())
             {
                 num2 += item.ModifyHealAmount(num, state, targetPlayer: true);
             }
 
-            state.ship.hull += num2;
+            state.ship.hull = Math.Min(state.ship.hullMax, state.ship.hull + num2);
         }
 
         public override void OnCombatStart(State state, Combat combat)
